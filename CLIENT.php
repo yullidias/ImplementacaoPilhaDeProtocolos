@@ -16,14 +16,26 @@ $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 /*AF_INET é um parametro domain IPv4 baseado nos protocolos de Internet. TCP é protocolo comum dessa família de protocolos.*/
 /* SOCK_STREAM éFornece sequencial, seguro, e em ambos os sentidos, conexões baseadas em "byte streams". Dados "out-of-band" do
 mecanismo de transmissão devem ser suportados. O protocolo TCP é baseado neste tipo de socket*/
-//SOL_TCP é...
 
 //Verificar se a criacao do socket foi ok
-
+if ($socket === false){
+  echo "/n------\nErro na criacao do socket: ".socket_strerror(socket_last_error())."\n------\n";
+  //chama a função socket_strerror() e pega o código de erro com a função socket_last_error().
+  //Retorna uma string descrevendo o erro.
+}
+else{
+  echo "Socket criado com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
+}
 //Conexao com o servidor
 
 //Probabilidade de colisão durante envio dos pacotes
 
-//
+//O programa deve estar continuamente em execucao: receber a quantidade de bits e enviar em pacotes
+while(true){
+  
+}
+//Encerra a conexão
+socket_close($socket);
+echo "Conexao encerrada!\n";
 ?>
 
