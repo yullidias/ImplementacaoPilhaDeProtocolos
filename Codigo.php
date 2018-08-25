@@ -14,7 +14,8 @@ encaminha para a camada superior*/
 //Criar socket
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 /*AF_INET é um parametro domain IPv4 baseado nos protocolos de Internet. TCP é protocolo comum dessa família de protocolos.*/
-//SOCK_STREAM é
+/* SOCK_STREAM éFornece sequencial, seguro, e em ambos os sentidos, conexões baseadas em "byte streams". Dados "out-of-band" do
+mecanismo de transmissão devem ser suportados. O protocolo TCP é baseado neste tipo de socket*/
 //SOL_TCP é...
 
 //Verificar se a criacao do socket foi ok
