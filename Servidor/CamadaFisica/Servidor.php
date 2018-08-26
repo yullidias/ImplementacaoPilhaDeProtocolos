@@ -7,8 +7,6 @@
  */
 
 //===========
-<<<<<<< HEAD
-
 function bin_to_string($bin){ //converte a sequencia binaria para uma string//
     $string = '';
     for($i=0; $i<(strlen($bin)-1); $i+=8){//para cada caractere em binário//
@@ -43,12 +41,11 @@ function MontaPacote($quadro){
     return $data;
 }
 
-=======
 //Log geral para registro das informacoes
 $log_geral = "../log_geral.txt";
 
 $TAM_MAX_BYTES = 3000000;
->>>>>>> e2ebe3805648736d920021440647ddb85d7248a1
+
 // set some variables
 $host = "127.0.0.1";
 $port = 8080;
@@ -60,10 +57,7 @@ $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket
 // bind socket to port
 socket_bind($socket, $host, $port) or die("Could not bind to socket\n");
 // start listening for connections
-<<<<<<< HEAD
-socket_listen($socket, 3) or die("Could not set up socket listener\n");
-$spawn = socket_accept($socket) or die("Could not accept incoming connection\n");
-=======
+
 $result = socket_listen($socket, 3);// or die("Could not set up socket listener\n");
 //Verificacao e log
 if($result === false){
@@ -87,8 +81,6 @@ else{
     file_put_contents($log_geral, "Socket_accept --- $spawn OK --- ".$timestamp."\n", FILE_APPEND);
 }
 
-//loop
->>>>>>> e2ebe3805648736d920021440647ddb85d7248a1
 while ($spawn != FALSE)
 {
     // read client input
