@@ -31,9 +31,25 @@ function macParaBinario($mac)
     $macArray = explode(':', $mac);
     foreach ($macArray as $hexaComDoisDigitos)
     {
-        $binario = $binario . base_convert($hexaComDoisDigitos, 16, 2);
+        $bin =  base_convert($hexaComDoisDigitos, 16, 2);
+        while( strlen($bin) < 8)
+        {
+            $bin = '0'. $bin;
+        }
+        $binario = $binario . $bin;
     }
     return $binario;
 }
 
-print macParaBinario(getMAC());
+function binarioParaMac($binario)
+{
+    $macDesformatado =  base_convert($binario, 2, 16);
+    $mac = substr($macDesformatado, 0, 2);
+    for ($i = 2; $i < strlen($macDesformatado); $i += 2)
+    {
+        $mac = $mac . ":" . substr($macDesformatado, $i, 2);
+    }
+    return $mac;
+}
+$bin = macParaBinario(getMAC());
+binarioParaMac($bin);
