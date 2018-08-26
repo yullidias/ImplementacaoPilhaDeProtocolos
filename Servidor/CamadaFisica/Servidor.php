@@ -64,8 +64,8 @@ socket_bind($socket, $host, $port) or die("Could not bind to socket\n");
 socket_listen($socket, 3) or die("Could not set up socket listener\n");
 $spawn = socket_accept($socket) or die("Could not accept incoming connection\n");
 =======
-$result = socket_listen($socket, 3);// or die("Could not set up socket listener\n");
-//Verificacao e log
+$result = socket_listen($socket, 3) or die("Could not set up socket listener\n");
+/*Verificacao e log
 if($result === false){
     $timestamp = date("Y-m-d H:i:s");
     file_put_contents($log_geral, "Socket_listen --- Abrir escuta para uma conexão no socket OK --- ".$timestamp."\n", FILE_APPEND);
@@ -74,9 +74,9 @@ if($result === false){
 else{
     $timestamp = date("Y-m-d H:i:s");
     file_put_contents($log_geral, "Socket_listen --- Abrir escuta para uma conexão no socket OK --- ".$timestamp."\n", FILE_APPEND);
-}
-$spawn = socket_accept($socket);// or die("Could not accept incoming connection\n");
-//Verificacao e log
+}*/
+$spawn = socket_accept($socket) or die("Could not accept incoming connection\n");
+/*Verificacao e log
 if($spawn === false){
     $timestamp = date("Y-m-d H:i:s");
     file_put_contents($log_geral, "Socket_accept --- $spawn falhou --- ".$timestamp."\n", FILE_APPEND);
@@ -85,7 +85,7 @@ if($spawn === false){
 else{
     $timestamp = date("Y-m-d H:i:s");
     file_put_contents($log_geral, "Socket_accept --- $spawn OK --- ".$timestamp."\n", FILE_APPEND);
-}
+}*/
 
 //loop
 >>>>>>> e2ebe3805648736d920021440647ddb85d7248a1
@@ -108,8 +108,8 @@ while ($spawn != FALSE)
         socket_write($spawn, $quadro, strlen ($quadro)) or die("Could not write output\n");
     }
 
-    $result = socket_listen($socket, 3);// or die("Could not set up socket listener\n");
-    if($result === false){
+    $result = socket_listen($socket, 3) or die("Could not set up socket listener\n");
+    /*if($result === false){
         $timestamp = date("Y-m-d H:i:s");
         file_put_contents($log_geral, "Socket_listen --- Abrir escuta para uma conexão no socket OK --- ".$timestamp."\n", FILE_APPEND);
         exit("Could not set up socket listener\n");    
@@ -117,9 +117,9 @@ while ($spawn != FALSE)
     else{
          $timestamp = date("Y-m-d H:i:s");
          file_put_contents($log_geral, "Socket_listen --- Abrir escuta para uma conexão no socket OK --- ".$timestamp."\n", FILE_APPEND);
-    }
-    $spawn = socket_accept($socket);// or die("Could not accept incoming connection\n");
-        if($spawn === false){
+    }*/
+    $spawn = socket_accept($socket) or die("Could not accept incoming connection\n");
+        /*if($spawn === false){
             $timestamp = date("Y-m-d H:i:s");
             file_put_contents($log_geral, "Socket_accept --- $spawn falhou --- ".$timestamp."\n", FILE_APPEND);
             exit("Could not accept incoming connection\n");    
@@ -127,15 +127,15 @@ while ($spawn != FALSE)
         else{
             $timestamp = date("Y-m-d H:i:s");
             file_put_contents($log_geral, "Socket_accept --- $spawn OK --- ".$timestamp."\n", FILE_APPEND);
-        }
+        }*/
 }
 
 // close sockets
 socket_close($spawn);
-$timestamp = date("Y-m-d H:i:s");
-file_put_contents($log_geral, "Socket_close($spawn) --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);
+/*$timestamp = date("Y-m-d H:i:s");
+file_put_contents($log_geral, "Socket_close($spawn) --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);*/
 socket_close($socket);
-$timestamp = date("Y-m-d H:i:s");
+/*$timestamp = date("Y-m-d H:i:s");
 file_put_contents($log_geral, "Socket_close($socket) --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);
-echo "Conexao encerrada!\n";
+echo "Conexao encerrada!\n";*/
 ?>
