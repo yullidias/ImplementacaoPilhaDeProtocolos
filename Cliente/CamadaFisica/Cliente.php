@@ -51,5 +51,37 @@ function binarioParaMac($binario)
     }
     return $mac;
 }
+
+function enviarMessagemServidor($socket, $mensagem)
+{
+    echo "Message To server :".$mensagem;
+// send string to server
+    socket_write($socket, $mensagem, strlen($mensagem)) or die("Could not send data to server\n");
+}
+
+function receberRespostaServidor($socket, $limiteMensagem)
+{
+    $result = socket_read ($socket, $limiteMensagem) or die("Could not read server response\n");
+    echo " Reply From Server  :".$result . "\n";
+    return $result;
+}
+
+function conectarAoServidor($host, $port, $mensagem, $limite)
+{
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+    $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
+    enviarMessagemServidor($socket, $mensagem);
+    $resposta = receberRespostaServidor($socket, $limite);
+    socket_close($socket);
+    return $resposta;
+}
 $bin = macParaBinario(getMAC());
 binarioParaMac($bin);
+
+
+//=========================
+$host    = "127.0.0.1";
+$port    = 8080;
+
+$tamMensagem = conectarAoServidor($host,$port,"TAM", 1024);
+conectarAoServidor($host,$port, "Teste", $tamMensagem);
