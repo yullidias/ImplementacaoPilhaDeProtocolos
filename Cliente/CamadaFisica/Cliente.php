@@ -5,6 +5,8 @@
  * Date: 8/25/18
  * Time: 9:37 PM
  */
+//Log geral para registro das informacoes
+$log_geral = "../log_geral.txt";
 
 /*
 function getMAC($interface)
@@ -68,7 +70,24 @@ function receberRespostaServidor($socket, $limiteMensagem)
 
 function conectarAoServidor($host, $port, $mensagem, $limite)
 {
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n"); //SOL_TCP
+    /*AF_INET é um parametro domain IPv4 baseado nos protocolos de Internet. TCP é protocolo comum dessa família de protocolos.*/
+    /* SOCK_STREAM éFornece sequencial, seguro, e em ambos os sentidos, conexões baseadas em "byte streams". Dados "out-of-band" do
+    mecanismo de transmissão devem ser suportados. O protocolo TCP é baseado neste tipo de socket*/
+    //Verificar se a criacao do socket foi ok
+    if ($socket === false){
+        echo "/n------\nErro na criacao do socket: ".socket_strerror(socket_last_error())."\n------\n";
+        //chama a função socket_strerror() e pega o código de erro com a função socket_last_error().
+        //Retorna uma string descrevendo o erro.
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, "Criacao de socket --- Erro na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
+	    //FILE_APPEND - Se o arquivo filename já existir, acrescenta os dados ao arquivo ao invés de sobrescrevê-lo.
+    }
+    else{
+	    echo "Socket criado com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
+	    $timestamp = date("Y-m-d H:i:s");
+	    file_put_contents($log_geral, "Criacao de socket --- Sucesso na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
+    }
     $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
     enviarMessagemServidor($socket, $mensagem);
     $resposta = receberRespostaServidor($socket, $limite);
