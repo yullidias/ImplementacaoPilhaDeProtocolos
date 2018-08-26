@@ -87,6 +87,17 @@ socket_bind ($socket_cliente , $endereco_server, $porta_server);
 $timestamp = date("Y-m-d H:i:s");
 file_put_contents($log_geral, "Socket_bind --- Atribuicao de um nome ao socket OK --- ".$timestamp."\n", FILE_APPEND);
 
+//mensagem a ser enviada
+$mensagem='0110110';//taquei qqr coisa pra ver se rola
+
+//Escreve em um socket
+socket_write ( $socket_cliente , $mensagem, strlen($mensagem));
+$timestamp = date("Y-m-d H:i:s");
+file_put_contents($log_geral, "TMQ --- ".$timestamp."\n", FILE_APPEND);
+//Lê um comprimento máximo de bytes de um socket
+$ainda_tem_o_que_ler= socket_read ($socket_cliente , int $length, PHP_BINARY_READ);//usa a função do sistema read().
+
+
 //Abre escuta para uma conexão no socket
 socket_listen ($socket_cliente, SOMAXCONN); //SOMAXCONN - valor máximo passado para o parâmetro backlog
 $timestamp = date("Y-m-d H:i:s");
@@ -100,6 +111,8 @@ socket_accept ($socket_cliente);
 //Probabilidade de colisão durante envio dos pacotes
 //Encerra a conexão
 socket_close($socket_cliente);
+$timestamp = date("Y-m-d H:i:s");
+file_put_contents($log_geral, "Socket_close --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);
 echo "Conexao encerrada!\n";
 ?>
 
