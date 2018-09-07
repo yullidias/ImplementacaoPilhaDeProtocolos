@@ -1,18 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 8/25/18
- * Time: 9:37 PM
- */
-//Log geral para registro das informacoes
-//$log_geral = "../log_geral.txt";
+
+$IP_ORIGEM = "127.0.0.1";
+$IP_DESTINO = "127.0.0.1";
+$PORTA_SERVIDOR_FISICA = 8080;
+$ARQUIVO_LOG = "../../log.txt";
+$LIMITE_MAXIMO_MENSAGEM = '1024';
 
 function getMAC($ip)
 {
     if($ip == '127.0.0.1')
     {
-        return "d0:df:9a:c4:07:ab";
+        $mac = "d0:df:9a:c4:07:ab";
     }
     else
     {
@@ -29,9 +27,9 @@ function getMAC($ip)
                 $i++;
             }
         }while(strlen($mac) < 17);
-        return $mac;
     }
-
+    EscreveNoLog("Protocolo ARP o ip " . $ip . "pertence ao MAC " . $mac);
+    return $mac;
 }
 
 function macParaBinario($mac)
@@ -63,61 +61,72 @@ function binarioParaMac($binario)
 
 function enviarMessagemServidor($socket, $mensagem)
 {
-    echo "Message To server :".$mensagem;
-// send string to server
-    socket_write($socket, $mensagem, strlen($mensagem)) or die("Could not send data to server\n");
+
+    if (socket_write($socket, $mensagem, strlen($mensagem)) === FALSE) //retorna 0 quando os bits são escritos o operador === é usando para garantir que retornou falso e não 0
+    {
+        EscreveNoLog("Mensagem não enviada");
+    }
+    else
+    {
+        EscreveNoLog("Mensagem enviada");
+    }
 }
 
 function receberRespostaServidor($socket, $limiteMensagem)
 {
-    $result = socket_read ($socket, intval($limiteMensagem));// or die("Could not read server response\n");
-/*		if($result === false){
-    $result = socket_read ($socket, $limiteMensagem) or die("Could not read server response\n");
-		/*if($result === false){
-		else{ */
-			echo " Reply From Server  :".$result . "\n";
-/*			$timestamp = date("Y-m-d H:i:s");
-			file_put_contents($log_geral, "Socket_read --- Reply From Server  :".$result ." --- ".$timestamp."\n", FILE_APPEND);
-			*/return $result;
-//		}
-}
-
-function conectarAoServidor($host, $port, $mensagem, $limite)
-{
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n"); //SOL_TCP
-    /*AF_INET é um parametro domain IPv4 baseado nos protocolos de Internet. TCP é protocolo comum dessa família de protocolos.*/
-    /* SOCK_STREAM éFornece sequencial, seguro, e em ambos os sentidos, conexões baseadas em "byte streams". Dados "out-of-band" do
-    mecanismo de transmissão devem ser suportados. O protocolo TCP é baseado neste tipo de socket*/
-    //Verificar se a criacao do socket foi ok
-   /* if ($socket === false){
-      $timestamp = date("Y-m-d H:i:s");
-      file_put_contents($log_geral, "Criacao de socket --- Erro na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
-			//FILE_APPEND - Se o arquivo filename já existir, acrescenta os dados ao arquivo ao invés de sobrescrevê-lo.
-			exit ("/n------\nErro na criacao do socket: ".socket_strerror(socket_last_error())."\n------\n");
-			//chama a função socket_strerror() e pega o código de erro com a função socket_last_error().
-      //Retorna uma string descrevendo o erro.
+    $resposta = socket_read ($socket, intval($limiteMensagem));
+    if( $resposta === FALSE)
+    {
+        EscreveNoLog("Resposta não recebida");
+        return null;
     }
-    else{
-	    echo "Socket criado com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
-	    $timestamp = date("Y-m-d H:i:s");
-	    file_put_contents($log_geral, "Criacao de socket --- Sucesso na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
-    }*/
-    $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
+    else
+    {
+        EscreveNoLog("Resposta recebida");
+        return $resposta;
+    }
+}
+function timestamp()
+{
+    $now = getdate();
+    $data = $now['mday'] . ' ' . $now['month'] . ' ' . $now['year'] . ' ' . $now['hours'] . ':' . $now['minutes'] . ':' . $now['seconds'] ." ";
+    return $data;
+}
+function EscreveNoLog($mensagem)
+{
+    file_put_contents ( $GLOBALS['ARQUIVO_LOG'], timestamp() ."[Física: Cliente] " . $mensagem . ". \n", FILE_APPEND | LOCK_EX); //lock_ex lock exclusivo
+
+}
+function EnviarMensagemEObterRespostaDoServidor($mensagem, $limite)
+{
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+    if ($socket === FALSE){
+        EscreveNoLog("Socket com a camada física não criado");
+    }
+    else
+    {
+        EscreveNoLog("Socket com a camada física criado");
+    }
+    $result = socket_connect($socket, $GLOBALS['IP_DESTINO'], $GLOBALS['PORTA_SERVIDOR_FISICA']);
+    if($result === FALSE)
+    {
+        EscreveNoLog("Conexão criada com a camada física");
+    }
     enviarMessagemServidor($socket, $mensagem);
     $resposta = receberRespostaServidor($socket, $limite);
     socket_close($socket);
     return $resposta;
 }
-function string_to_bin($string){ //converte a string em uma sequencia binaria//
-    $bin = '';
-    $chars = str_split($string); //separa a string em um array de caracteres//
-    foreach($chars as $c){//para cada caractere na string//
-        $hex = unpack('H*', $c);//passa o caractere para hexadecimal//
-        $b = base_convert($hex[1], 16, 2); //passa o hexadecimal para binario//
-        while(strlen($b)<8){ $b = '0'.$b; } //garante que tem 8 bits//
-        $bin .= $b; //concatena//
-    } //echo "String: ".$string."</br>Binario: ".$bin."</br>";//debug//
-    return $bin;
+function string_to_bin($string){
+    $stringEmBinario = '';
+    $arrayDeCaracter = str_split($string);
+    foreach($arrayDeCaracter as $caracter){
+        $caracterEmHexadecimal = unpack('H*', $caracter);
+        $caracterEmBinario = base_convert($caracterEmHexadecimal[1], 16, 2);
+        while(strlen($caracterEmBinario)<8){ $caracterEmBinario = '0'.$caracterEmBinario; } //garante que tem 8 bits
+        $stringEmBinario .= $caracterEmBinario;
+    }
+    return $stringEmBinario;
 }
 
 function getMensagemPacote()
@@ -136,42 +145,43 @@ function MontaQuadro()
 {
     $ipDestino = getIpPacote();
     $mensagem = getMensagemPacote();
-    $ipOrigem = file('../myIp.txt');
-    $ipOrigem = $ipOrigem[0];
+    $ipOrigem = $GLOBALS['IP_ORIGEM'];
 
     $preambulo = '0101';
-    $sfd = '10101011'; // Delimitador de início de quadro //
+    $sfd = '10101011'; // Delimitador de início de quadro
     $macOrigem = macParaBinario(getMAC($ipOrigem));
     $macDestino = macParaBinario(getMAC($ipDestino));
-    $tipo = '0100100101010000';//IP//
-    $data = string_to_bin($mensagem); //converte o pacote para binário//
-    $crc = '01000101010100100101001001001111'; //string ERRO//
+    $tipo = '0100100101010000';//IP
+    $data = string_to_bin($mensagem);
+    $crc = '01000101010100100101001001001111'; //string ERRO
     return $preambulo.$sfd.$macOrigem.$macDestino.$tipo.$data.$crc;
 }
 
-function bin_to_string($bin){ //converte a sequencia binaria para uma string//
+function bin_to_string($sequenciaDeBits){ //converte a sequencia binaria para uma string//
     $string = '';
-    for($i=0; $i<(strlen($bin)-1); $i+=8){//para cada caractere em binário//
-        $hex = base_convert(substr($bin, $i, 8), 2, 16);//converte de binário para hexadecimal//
-        while(strlen($hex)<2){ $hex = '0'.$hex; }
-        $c = pack('H*', $hex);//passa o hexadecimal para caractere, concatena na string//
-        $string .= $c;
-    } //echo "Binario: ".$bin."<</br>>String: ".$string."<</br>>";//debug//
+    for($i=0; $i<(strlen($sequenciaDeBits)-1); $i+=8){
+        $hex = base_convert(substr($sequenciaDeBits, $i, 8), 2, 16);
+        while(strlen($hex)<2)
+        {
+            $hex = '0'.$hex;
+        }
+        $caracter = pack('H*', $hex);//passa o hexadecimal para caractere, concatena na string//
+        $string .= $caracter;
+    }
     return $string;
 }
-//=========================
-$host    = "127.0.0.1";
-$port    = 8080;
+
+
 
 $quadro = MontaQuadro();
 print $quadro ."\n";
 
-$tamMensagemEmBinario = conectarAoServidor($host,$port,string_to_bin("TAM"), 1024);
-$tamMensagem = bin_to_string($tamMensagemEmBinario);
+$tamMensagemEmBinario = EnviarMensagemEObterRespostaDoServidor(string_to_bin("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+$GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = bin_to_string($tamMensagemEmBinario);
 $mensagem = MontaQuadro();
-$resposta = conectarAoServidor($host,$port, $mensagem, $tamMensagem);
+$resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
 
 if(strcmp($resposta, $mensagem) == 0)
 {
-    print "Pacote recebido com sucesso!";
+    print "\n\nPacote recebido com sucesso!";
 }
