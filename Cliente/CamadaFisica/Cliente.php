@@ -190,6 +190,10 @@ while($tentativa < $N_maxTentativas)
         $tentativa = 0;
         $mensagem = MontaQuadro($MAC_from_IP);
         $resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+        if(strcmp($resposta, $mensagem) == 0)
+        {
+            print "\n\nPacote recebido com sucesso!";
+        }
         break;
     }
     sleep(1);
@@ -200,7 +204,3 @@ if($tentativa == $N_maxTentativas)
     EscreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
 
-if(strcmp($resposta, $mensagem) == 0)
-{
-    print "\n\nPacote recebido com sucesso!";
-}
