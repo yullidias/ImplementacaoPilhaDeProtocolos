@@ -175,8 +175,30 @@ $quadro = MontaQuadro($MAC_from_IP);
 $tamMensagemEmBinario = EnviarMensagemEObterRespostaDoServidor(string_to_bin("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
 $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = bin_to_string($tamMensagemEmBinario);
 print "limite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'];
-$mensagem = MontaQuadro($MAC_from_IP);
-$resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+$N_maxTentativas = 10;
+$tentativa = 0;
+while($tentativa < $N_maxTentativas)
+{
+    if(rand(0,100) > 30)
+    {
+        $tentativa += 1;
+        EscreveNoLog("Colisão! Tentativa " . $tentativa);
+        sleep(rand(0,3));
+    }
+    else
+    {
+        $tentativa = 0;
+        $mensagem = MontaQuadro($MAC_from_IP);
+        $resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+        break;
+    }
+    sleep(1);
+}
+
+if($tentativa == $N_maxTentativas)
+{
+    EscreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
+}
 
 if(strcmp($resposta, $mensagem) == 0)
 {
