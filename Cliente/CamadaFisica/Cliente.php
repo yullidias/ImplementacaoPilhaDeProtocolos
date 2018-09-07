@@ -5,12 +5,13 @@ $IP_DESTINO = "127.0.0.1";
 $PORTA_SERVIDOR_FISICA = 8080;
 $ARQUIVO_LOG = "../../log.txt";
 $LIMITE_MAXIMO_MENSAGEM = '1024';
+$MAC_from_IP = array( "127.0.0.1" => "d0:df:9a:c4:07:ab");
 
-function getMAC($ip)
+function getMAC($ip, &$macIp)
 {
-    if($ip == '127.0.0.1')
+    if(array_key_exists($ip,$macIp))
     {
-        $mac = "d0:df:9a:c4:07:ab";
+        $mac = $macIp[$ip];
     }
     else
     {
@@ -27,8 +28,9 @@ function getMAC($ip)
                 $i++;
             }
         }while(strlen($mac) < 17);
+        $macIp[$ip] = $mac;
     }
-    EscreveNoLog("Protocolo ARP o ip " . $ip . "pertence ao MAC " . $mac);
+    EscreveNoLog("Protocolo ARP o ip " . $ip . " pertence ao MAC " . $mac);
     return $mac;
 }
 
@@ -128,6 +130,19 @@ function string_to_bin($string){
     }
     return $stringEmBinario;
 }
+function bin_to_string($sequenciaDeBits){
+    $string = '';
+    for($i=0; $i<(strlen($sequenciaDeBits)-1); $i+=8){
+        $hex = base_convert(substr($sequenciaDeBits, $i, 8), 2, 16);
+        while(strlen($hex)<2)
+        {
+            $hex = '0'.$hex;
+        }
+        $caracter = pack('H*', $hex);
+        $string .= $caracter;
+    }
+    return $string;
+}
 
 function getMensagemPacote()
 {
@@ -141,44 +156,26 @@ function getIpPacote()
     $split = explode(' ', $conteudo[0]);
     return $split[0];
 }
-function MontaQuadro()
+function MontaQuadro(&$macIp)
 {
     $ipDestino = getIpPacote();
     $mensagem = getMensagemPacote();
-    $ipOrigem = $GLOBALS['IP_ORIGEM'];
-
     $preambulo = '0101';
     $sfd = '10101011'; // Delimitador de início de quadro
-    $macOrigem = macParaBinario(getMAC($ipOrigem));
-    $macDestino = macParaBinario(getMAC($ipDestino));
+    $macOrigem = macParaBinario(getMAC($GLOBALS['IP_ORIGEM'], $macIp));
+    $macDestino = macParaBinario(getMAC($ipDestino, $macIp));
     $tipo = '0100100101010000';//IP
     $data = string_to_bin($mensagem);
     $crc = '01000101010100100101001001001111'; //string ERRO
     return $preambulo.$sfd.$macOrigem.$macDestino.$tipo.$data.$crc;
 }
 
-function bin_to_string($sequenciaDeBits){ //converte a sequencia binaria para uma string//
-    $string = '';
-    for($i=0; $i<(strlen($sequenciaDeBits)-1); $i+=8){
-        $hex = base_convert(substr($sequenciaDeBits, $i, 8), 2, 16);
-        while(strlen($hex)<2)
-        {
-            $hex = '0'.$hex;
-        }
-        $caracter = pack('H*', $hex);//passa o hexadecimal para caractere, concatena na string//
-        $string .= $caracter;
-    }
-    return $string;
-}
-
-
-
-$quadro = MontaQuadro();
-print $quadro ."\n";
+$quadro = MontaQuadro($MAC_from_IP);
 
 $tamMensagemEmBinario = EnviarMensagemEObterRespostaDoServidor(string_to_bin("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
 $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = bin_to_string($tamMensagemEmBinario);
-$mensagem = MontaQuadro();
+print "limite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'];
+$mensagem = MontaQuadro($MAC_from_IP);
 $resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
 
 if(strcmp($resposta, $mensagem) == 0)
