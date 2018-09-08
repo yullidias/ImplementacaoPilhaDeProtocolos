@@ -6,6 +6,10 @@
  * Time: 9:37 PM
  */
 
+function lerArquivoLog()
+{
+    return "../log_geral.txt";
+}
 
 function getMAC($ip)
 {
@@ -62,27 +66,31 @@ function binarioParaMac($binario)
 
 function enviarMessagemServidor($socket, $mensagem)
 {
-    echo "Message To server :".$mensagem;
-// send string to server
-    socket_write($socket, $mensagem, strlen($mensagem)) or die("Could not send data to server\n");
+    $log_geral = lerArquivoLog();
+    echo "Mensagem para o servidor :".$mensagem;
+    if(!socket_write($socket, $mensagem, strlen($mensagem))){
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, "Enviar mensagem --- Erro ao enviar mensagem ao servidor --- ".$timestamp."\n", FILE_APPEND);
+        exit ("\n------\nErro ao enviar mensagem ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
+    } else {
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, "Enviar mensagem --- Mensagem enviada com sucesso --- ".$timestamp."\n", FILE_APPEND);
+    }
 }
 
 function receberRespostaServidor($socket, $limiteMensagem)
 {
-    $log_geral = "../log_geral.txt";
+    $log_geral = lerArquivoLog();
     $result = socket_read ($socket, intval($limiteMensagem));// or die("Could not read server response\n");
     if($result === false){
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Resposta do Servidor --- Erro ao recever resposta do servidor --- ".$timestamp."\n", FILE_APPEND);
-        //FILE_APPEND - Se o arquivo filename já existir, acrescenta os dados ao arquivo ao invés de sobrescrevê-lo.
-        exit ("/n------\nErro ao receber resposta do servidor: ".socket_strerror(socket_last_error())."\n------\n");
-        //chama a função socket_strerror() e pega o código de erro com a função socket_last_error().
-        //Retorna uma string descrevendo o erro.
+        file_put_contents($log_geral, "Resposta do Servidor --- Erro ao receber resposta do servidor --- ".$timestamp."\n", FILE_APPEND);
+        exit ("\n------\nErro ao receber resposta do servidor: ".socket_strerror(socket_last_error())."\n------\n");
     }
     else{
-        echo " Reply From Server  :" . $result . "\n";
+        echo "\n------\nResposta do servidor  :" . $result . "\n------\n";
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Socket_read --- Reply From Server  :" . $result . " --- " . $timestamp . "\n", FILE_APPEND);
+        file_put_contents($log_geral, "Socket_read --- Resposta do servidor  :" . $result . " --- " . $timestamp . "\n", FILE_APPEND);
     }
 
     return $result;
@@ -90,31 +98,27 @@ function receberRespostaServidor($socket, $limiteMensagem)
 
 function conectarAoServidor($host, $port, $mensagem, $limite)
 {
-    $log_geral = "../log_geral.txt";
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n"); //SOL_TCP
-    /*AF_INET é um parametro domain IPv4 baseado nos protocolos de Internet. TCP é protocolo comum dessa família de protocolos.*/
-    /* SOCK_STREAM éFornece sequencial, seguro, e em ambos os sentidos, conexões baseadas em "byte streams". Dados "out-of-band" do
-    mecanismo de transmissão devem ser suportados. O protocolo TCP é baseado neste tipo de socket*/
-    //Verificar se a criacao do socket foi ok
-    if ($socket === false){
-      $timestamp = date("Y-m-d H:i:s");
-      file_put_contents($log_geral, "Criacao de socket --- Erro na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
-      //FILE_APPEND - Se o arquivo filename já existir, acrescenta os dados ao arquivo ao invés de sobrescrevê-lo.
-        exit ("/n------\nErro na criacao do socket: ".socket_strerror(socket_last_error())."\n------\n");
-        //chama a função socket_strerror() e pega o código de erro com a função socket_last_error().
-      //Retorna uma string descrevendo o erro.
+    $log_geral = lerArquivoLog();
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+    $result = socket_connect($socket, $host, $port);
+
+    if ($socket === false || $result == false){
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, "Conexão com servidor --- Erro ao conectar no servidor--- ".$timestamp."\n", FILE_APPEND);
+        exit ("\n------\nErro ao conectar ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
+    } else{
+        echo "Conexão estabelecida com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, "Conexão com servidor --- Sucesso ao conectar ao servidor --- ".$timestamp."\n", FILE_APPEND);
+        enviarMessagemServidor($socket, $mensagem);
+        $resposta = receberRespostaServidor($socket, $limite);
+        socket_close($socket);
+
+        return $resposta;
     }
-    else{
-	    echo "Socket criado com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
-	    $timestamp = date("Y-m-d H:i:s");
-	    file_put_contents($log_geral, "Criacao de socket --- Sucesso na criacao do socket do cliente --- ".$timestamp."\n", FILE_APPEND);
-    }
-    $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
-    enviarMessagemServidor($socket, $mensagem);
-    $resposta = receberRespostaServidor($socket, $limite);
-    socket_close($socket);
-    return $resposta;
+
 }
+
 function string_to_bin($string){ //converte a string em uma sequencia binaria//
     $bin = '';
     $chars = str_split($string); //separa a string em um array de caracteres//
@@ -180,5 +184,5 @@ $resposta = conectarAoServidor($host,$port, $mensagem, $tamMensagem);
 
 if(strcmp($resposta, $mensagem) == 0)
 {
-    print "Pacote recebido com sucesso!";
+    print "Pacote recebido com sucesso!\n";
 }

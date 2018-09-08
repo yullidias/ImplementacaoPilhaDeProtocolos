@@ -74,3 +74,35 @@ Socket_accept --- Resource id #7 OK --- 2018-09-08 19:26:30
 Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:26:30
 Socket_accept --- Resource id #10 OK --- 2018-09-08 19:26:30
 Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:26:30
+Socket_accept --- Resource id #13 OK --- 2018-09-08 19:30:14
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:30:14
+Socket_accept --- Resource id #16 OK --- 2018-09-08 19:30:14
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:30:14
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:44:41
+Socket_accept --- Resource id #7 OK --- 2018-09-08 19:44:46
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:44:46
+Socket_accept --- Resource id #10 OK --- 2018-09-08 19:45:27
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:45:27
+Socket_accept --- Resource id #13 OK --- 2018-09-08 19:45:27
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:45:27
+Socket_accept --- Resource id #16 OK --- 2018-09-08 19:53:35
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:53:35
+Socket_accept --- Resource id #19 OK --- 2018-09-08 19:53:35
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:53:35
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:58:51
+Socket_accept --- Resource id #7 OK --- 2018-09-08 19:58:54
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:58:54
+Socket_accept --- Resource id #10 OK --- 2018-09-08 19:58:54
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 19:58:54
+Socket_accept --- Resource id #13 OK --- 2018-09-08 20:01:09
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:09
+Socket_accept --- Resource id #16 OK --- 2018-09-08 20:01:09
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:09
+Socket_accept --- Resource id #19 OK --- 2018-09-08 20:01:22
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:22
+Socket_accept --- Resource id #22 OK --- 2018-09-08 20:01:22
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:22
+Socket_accept --- Resource id #25 OK --- 2018-09-08 20:01:35
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:35
+Socket_accept --- Resource id #28 OK --- 2018-09-08 20:01:35
+Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 20:01:35
