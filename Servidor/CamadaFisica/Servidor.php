@@ -6,7 +6,6 @@
  * Time: 8:09 AM
  */
 
-//===========
 function bin_to_string($bin){ //converte a sequencia binaria para uma string//
     $string = '';
     for($i=0; $i<(strlen($bin)-1); $i+=8){//para cada caractere em binário//
@@ -53,9 +52,24 @@ $TAM_MAX_BYTES = '3000000';
 // don't timeout!
 set_time_limit(0);
 // create socket
-$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+if(!$socket) {
+    $timestamp = date("Y-m-d H:i:s");
+    file_put_contents($log_geral, "socket_create --- erro ao criar socket --- ".$timestamp."\n", FILE_APPEND);
+    exit("Could not set up socket listener\n");
+}else {
+    $timestamp = date("Y-m-d H:i:s");
+    file_put_contents($log_geral, "socket_create --- socket criado com sucesso --- ".$timestamp."\n", FILE_APPEND);
+}
 // bind socket to port
-socket_bind($socket, $host, $port) or die("Could not bind to socket\n");
+if(!socket_bind($socket, $host, $port)){
+    $timestamp = date("Y-m-d H:i:s");
+    file_put_contents($log_geral, "socket_bind --- socket_bind error --- ".$timestamp."\n", FILE_APPEND);
+    exit("Could not set up socket bind\n");
+} else {
+    $timestamp = date("Y-m-d H:i:s");
+    file_put_contents($log_geral, "socket_bind --- socket_bind ok --- ".$timestamp."\n", FILE_APPEND);
+}
 // start listening for connections
 
 $result = socket_listen($socket, 3);// or die("Could not set up socket listener\n");

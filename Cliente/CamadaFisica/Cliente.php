@@ -99,7 +99,7 @@ function receberRespostaServidor($socket, $limiteMensagem)
 function conectarAoServidor($host, $port, $mensagem, $limite)
 {
     $log_geral = lerArquivoLog();
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Não foi possível criar o socket\n");
     $result = socket_connect($socket, $host, $port);
 
     if ($socket === false || $result == false){
