@@ -69,14 +69,53 @@ function enviarMessagemServidor($socket, $mensagem)
 {
     $log_geral = lerArquivoLog();
     echo "Mensagem para o servidor :".$mensagem;
-    if(!socket_write($socket, $mensagem, strlen($mensagem))){
-        $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, $timestamp." Enviar mensagem --- Erro ao enviar mensagem ao servidor --- \n", FILE_APPEND);
-        exit ("\n------\nErro ao enviar mensagem ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
-    } else {
-        $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, $timestamp." Enviar mensagem --- Mensagem enviada com sucesso --- \n", FILE_APPEND);
+    //testar parada da colisao
+    $a = array_fill(0, 10, 'null');
+    //print_r($a);
+    $probcolisao = (20*10)/100;//probabilidade de 20%
+    $minrange = 0;
+    $maxrange = 1;
+    for($w = 0 ; $w < 10; $w ++) {
+        $contador = 0;
+        for($j=0; $j <= $w; $j ++){
+            if($a[$j] === 1){
+                $contador ++;
+            }
+        }
+        if($contador < $probcolisao) {
+            $a[$w] = random_int($minrange, $maxrange);
+        }
+        else{
+            $a[$w] = 0;
+        }
     }
+    print_r($a);
+    $conta = 2;
+    while(true) {
+        $sorteio = random_int(0, 9);
+        print_r($sorteio);
+        if ($a[$sorteio] === 1) {
+            echo "\nCOLISAO! --- Contagem aleatoria de tempo para tentar outra vez... \n";
+            $timestamp = date("Y-m-d H:i:s");
+            file_put_contents($log_geral, $timestamp . " COLISAO! --- Contagem aleatoria de tempo para tentar outra vez... \n", FILE_APPEND);
+            sleep($conta);
+            $conta = $conta + 2;
+            if($conta > 16) {
+                exit ("\n------\nErro ao enviar mensagem ao servidor: \n------\n");
+            }
+        }
+        else{
+            if(!socket_write($socket, $mensagem, strlen($mensagem))){
+                $timestamp = date("Y-m-d H:i:s");
+                file_put_contents($log_geral, $timestamp." Enviar mensagem --- Erro ao enviar mensagem ao servidor --- \n", FILE_APPEND);
+                exit ("\n------\nErro ao enviar mensagem ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
+            } else {
+                $timestamp = date("Y-m-d H:i:s");
+                file_put_contents($log_geral, $timestamp." Enviar mensagem --- Mensagem enviada com sucesso --- \n", FILE_APPEND);
+            }
+            break;
+        }
+    }    
 }
 
 function receberRespostaServidor($socket, $limiteMensagem)
