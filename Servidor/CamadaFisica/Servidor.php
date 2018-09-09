@@ -98,7 +98,16 @@ else{
 while ($spawn != FALSE)
 {
     // read client input
-    $quadro = socket_read($spawn, intval($TAM_MAX_BYTES)) or die("Could not read input\n");
+    $quadro = socket_read($spawn, intval($TAM_MAX_BYTES));// or die("Could not read input\n");
+    if($quadro === false){
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, $timestamp." Socket_read --- Could not read input --- \n", FILE_APPEND);
+        exit("Could not read input\n");
+    }
+    else{
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, $timestamp." Socket_read ---  OK --- \n", FILE_APPEND);
+    }
     // clean up input string
     $quadro = trim($quadro);
     print "quadro " . $quadro . "\n";
