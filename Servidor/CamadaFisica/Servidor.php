@@ -148,9 +148,9 @@ while ($spawn != FALSE)
 // close sockets
 socket_close($spawn);
 $timestamp = date("Y-m-d H:i:s");
-file_put_contents($log_geral, "Socket_close($spawn) --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);
+file_put_contents($log_geral, $timestamp." Socket_close($spawn) --- Conexao encerrada --- \n", FILE_APPEND);
 socket_close($socket);
 $timestamp = date("Y-m-d H:i:s");
-file_put_contents($log_geral, "Socket_close($socket) --- Conexao encerrada --- ".$timestamp."\n", FILE_APPEND);
+file_put_contents($log_geral, $timestamp." Socket_close($socket) --- Conexao encerrada --- \n", FILE_APPEND);
 echo "Conexao encerrada!\n";
 ?>
