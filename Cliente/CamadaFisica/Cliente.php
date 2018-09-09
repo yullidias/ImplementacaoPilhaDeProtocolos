@@ -5,6 +5,7 @@
  * Date: 8/25/18
  * Time: 9:37 PM
  */
+//Mudanca na ordenacao dos logs
 
 function lerArquivoLog()
 {
@@ -70,11 +71,11 @@ function enviarMessagemServidor($socket, $mensagem)
     echo "Mensagem para o servidor :".$mensagem;
     if(!socket_write($socket, $mensagem, strlen($mensagem))){
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Enviar mensagem --- Erro ao enviar mensagem ao servidor --- ".$timestamp."\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Enviar mensagem --- Erro ao enviar mensagem ao servidor --- \n", FILE_APPEND);
         exit ("\n------\nErro ao enviar mensagem ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
     } else {
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Enviar mensagem --- Mensagem enviada com sucesso --- ".$timestamp."\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Enviar mensagem --- Mensagem enviada com sucesso --- \n", FILE_APPEND);
     }
 }
 
@@ -84,13 +85,13 @@ function receberRespostaServidor($socket, $limiteMensagem)
     $result = socket_read ($socket, intval($limiteMensagem));// or die("Could not read server response\n");
     if($result === false){
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Resposta do Servidor --- Erro ao receber resposta do servidor --- ".$timestamp."\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Resposta do Servidor --- Erro ao receber resposta do servidor --- \n", FILE_APPEND);
         exit ("\n------\nErro ao receber resposta do servidor: ".socket_strerror(socket_last_error())."\n------\n");
     }
     else{
         echo "\n------\nResposta do servidor  :" . $result . "\n------\n";
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Socket_read --- Resposta do servidor  :" . $result . " --- " . $timestamp . "\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Socket_read --- Resposta do servidor  :" . $result . " --- \n", FILE_APPEND);
     }
 
     return $result;
@@ -104,12 +105,12 @@ function conectarAoServidor($host, $port, $mensagem, $limite)
 
     if ($socket === false || $result == false){
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Conexão com servidor --- Erro ao conectar no servidor--- ".$timestamp."\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Conexão com servidor --- Erro ao conectar no servidor--- \n", FILE_APPEND);
         exit ("\n------\nErro ao conectar ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
     } else{
         echo "Conexão estabelecida com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
         $timestamp = date("Y-m-d H:i:s");
-        file_put_contents($log_geral, "Conexão com servidor --- Sucesso ao conectar ao servidor --- ".$timestamp."\n", FILE_APPEND);
+        file_put_contents($log_geral, $timestamp." Conexão com servidor --- Sucesso ao conectar ao servidor --- \n", FILE_APPEND);
         enviarMessagemServidor($socket, $mensagem);
         $resposta = receberRespostaServidor($socket, $limite);
         socket_close($socket);
