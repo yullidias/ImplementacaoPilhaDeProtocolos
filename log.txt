@@ -1,0 +1,146 @@
+9 September 2018 14:35:55 [Física: Servidor] Socket com a camada física criado. 
+9 September 2018 14:35:55 [Física: Servidor] Vinculando um nome para o socket. 
+9 September 2018 14:35:55 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:36:2 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:36:2 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:36:2 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:36:2 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:36:2 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:36:2 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:36:2 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:36:2 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:36:2 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:36:2 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:36:5 [Física: Cliente] Colisão! Tentativa 2. 
+9 September 2018 14:36:8 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:36:8 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:36:8 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:36:8 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:36:8 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:36:8 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:36:8 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:36:8 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:36:8 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:39:20 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:20 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:20 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:39:20 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:39:20 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:39:20 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:39:20 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:39:20 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:39:20 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:39:20 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:39:22 [Física: Cliente] Colisão! Tentativa 2. 
+9 September 2018 14:39:24 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:24 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:24 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:39:24 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:39:24 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:39:24 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:39:24 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:39:24 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:39:24 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:39:32 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:32 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:32 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:39:32 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:39:32 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:39:32 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:39:32 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:39:32 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:39:32 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:39:32 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:39:35 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:35 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:39:35 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:39:35 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:39:35 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:39:35 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:39:35 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:39:35 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:39:35 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:44:57 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:44:57 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:44:57 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:44:57 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:44:57 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:44:57 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:44:57 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:44:57 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:44:57 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:44:57 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:45:0 [Física: Cliente] Colisão! Tentativa 2. 
+9 September 2018 14:45:3 [Física: Cliente] Colisão! Tentativa 3. 
+9 September 2018 14:45:4 [Física: Cliente] Colisão! Tentativa 4. 
+9 September 2018 14:45:8 [Física: Cliente] Colisão! Tentativa 5. 
+9 September 2018 14:45:9 [Física: Cliente] Colisão! Tentativa 6. 
+9 September 2018 14:45:10 [Física: Cliente] Colisão! Tentativa 7. 
+9 September 2018 14:45:11 [Física: Cliente] Colisão! Tentativa 8. 
+9 September 2018 14:45:14 [Física: Cliente] Colisão! Tentativa 9. 
+9 September 2018 14:45:18 [Física: Cliente] Colisão! Tentativa 10. 
+9 September 2018 14:45:21 [Física: Cliente] Número máximo de tentativas para enviar o pacote foi atingido. 
+9 September 2018 14:46:6 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:6 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:6 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:6 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:6 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:6 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:46:6 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:6 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:6 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:46:6 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:46:9 [Física: Cliente] Colisão! Tentativa 2. 
+9 September 2018 14:46:13 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:13 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:13 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:13 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:13 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:13 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:13 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:46:13 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:13 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:46:18 [Física: Servidor] Socket com a camada física criado. 
+9 September 2018 14:46:18 [Física: Servidor] Vinculando um nome para o socket. 
+9 September 2018 14:46:18 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:24 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:24 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:24 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:24 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:24 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:24 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:24 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:46:24 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:46:24 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:24 [Física: Cliente] Colisão! Tentativa 1. 
+9 September 2018 14:46:25 [Física: Cliente] Colisão! Tentativa 2. 
+9 September 2018 14:46:26 [Física: Cliente] Colisão! Tentativa 3. 
+9 September 2018 14:46:30 [Física: Cliente] Colisão! Tentativa 4. 
+9 September 2018 14:46:33 [Física: Cliente] Colisão! Tentativa 5. 
+9 September 2018 14:46:36 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:36 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:36 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:36 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:36 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:36 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:36 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:46:36 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:36 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:46:44 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:44 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:44 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:44 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:44 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:44 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:44 [Física: Servidor] Enviando limite máximo. 
+9 September 2018 14:46:44 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:44 [Física: Cliente] Resposta recebida. 
+9 September 2018 14:46:44 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:44 [Física: Cliente] Protocolo ARP o ip 127.0.0.1 pertence ao MAC d0:df:9a:c4:07:ab. 
+9 September 2018 14:46:44 [Física: Cliente] Socket com a camada física criado. 
+9 September 2018 14:46:44 [Física: Cliente] Mensagem enviada. 
+9 September 2018 14:46:44 [Física: Servidor] Conexão aceita. 
+9 September 2018 14:46:44 [Física: Servidor] Quadro recebido. 
+9 September 2018 14:46:44 [Física: Servidor] Mensagem {www.google.com} recebida. 
+9 September 2018 14:46:44 [Física: Servidor] Ouvindo a conexão. 
+9 September 2018 14:46:44 [Física: Cliente] Resposta recebida. 

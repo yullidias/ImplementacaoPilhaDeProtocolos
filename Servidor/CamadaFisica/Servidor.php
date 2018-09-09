@@ -4,7 +4,7 @@ $MEU_IP = "127.0.0.1";
 $MINHA_PORTA = 8080;
 $TAM_MAX_BYTES = '3000000';
 
-function bin_to_string($sequenciaDeBits){
+function binarioParaString($sequenciaDeBits){
     $string = '';
     for($i=0; $i<(strlen($sequenciaDeBits)-1); $i+=8){
         $hex = base_convert(substr($sequenciaDeBits, $i, 8), 2, 16);
@@ -17,7 +17,7 @@ function bin_to_string($sequenciaDeBits){
     }
     return $string;
 }
-function string_to_bin($string){
+function stringParaBinario($string){
     $stringEmBinario = '';
     $arrayDeCaracter = str_split($string);
     foreach($arrayDeCaracter as $caracter){
@@ -29,7 +29,7 @@ function string_to_bin($string){
     return $stringEmBinario;
 }
 
-function ObterMenssagemDoQuadro($quadro){
+function obterMenssagemDoQuadro($quadro){
     $preambulo = substr($quadro, 0, 4); //4 bits
     $sfd = substr($quadro, 4, 8); //8 bits
     $mac_org = substr($quadro, 12, 48);
@@ -37,7 +37,7 @@ function ObterMenssagemDoQuadro($quadro){
     $tipo = substr($quadro, 108, 16); //16 bits
     $tam_dado = strlen($quadro) - 156; //tamanho total - cabeçalho - crc
     $data = substr($quadro, 124, $tam_dado);
-    $data = bin_to_string($data); //converte o pacote para string
+    $data = binarioParaString($data); //converte o pacote para string
     $crc = substr($quadro, 124+$tam_dado, 32); //crc tem 32 bits
     return $data;
 }
@@ -47,7 +47,7 @@ function timestamp()
     $data = $now['mday'] . ' ' . $now['month'] . ' ' . $now['year'] . ' ' . $now['hours'] . ':' . $now['minutes'] . ':' . $now['seconds'] ." ";
     return $data;
 }
-function EscreveNoLog($mensagem)
+function escreveNoLog($mensagem)
 {
     file_put_contents ( $GLOBALS['ARQUIVO_LOG'], timestamp() ."[Física: Servidor] " . $mensagem . ". \n", FILE_APPEND | LOCK_EX); //lock_ex lock exclusivo
 
@@ -56,20 +56,20 @@ set_time_limit(0); //sem timeout
 $socket = socket_create(AF_INET, SOCK_STREAM, 0);
 if($socket === FALSE)
 {
-    EscreveNoLog("Socket com a camada física não criado");
+    escreveNoLog("Socket com a camada física não criado");
 }
 else
 {
-    EscreveNoLog("Socket com a camada física criado");
+    escreveNoLog("Socket com a camada física criado");
 }
 
 if(socket_bind($socket, $GLOBALS['MEU_IP'], $GLOBALS['MINHA_PORTA']) === FALSE)
 {
-    EscreveNoLog("Erro ao vincular nome para o socket");
+    escreveNoLog("Erro ao vincular nome para o socket");
 }
 else
 {
-    EscreveNoLog("Vinculando um nome para o socket");
+    escreveNoLog("Vinculando um nome para o socket");
 }
 
 do
@@ -77,44 +77,44 @@ do
     $result = socket_listen($socket);
     if($result === false)
     {
-        EscreveNoLog("Errro ao ouvir conexão");
+        escreveNoLog("Errro ao ouvir conexão");
     }
     else
     {
-        EscreveNoLog("Ouvindo a conexão");
+        escreveNoLog("Ouvindo a conexão");
     }
     $spawn = socket_accept($socket);
     if($spawn === false){
-        EscreveNoLog("Conexão não aceita");
+        escreveNoLog("Conexão não aceita");
     }
     else{
-        EscreveNoLog("Conexão aceita");
+        escreveNoLog("Conexão aceita");
     }
     $quadro = socket_read($spawn, intval($TAM_MAX_BYTES));
     if($quadro === FALSE)
     {
-        EscreveNoLog("Erro ao receber o quadro");
+        escreveNoLog("Erro ao receber o quadro");
     }
     else
     {
-        EscreveNoLog("Quadro recebido");
+        escreveNoLog("Quadro recebido");
     }
 
     $quadro = trim($quadro);
-    $mensagem = bin_to_string($quadro);
+    $mensagem = binarioParaString($quadro);
     if(strcmp($mensagem, "TAM") == 0)
     {
-        EscreveNoLog("Enviando limite máximo");
-        $resposta = string_to_bin($TAM_MAX_BYTES);
+        escreveNoLog("Enviando limite máximo");
+        $resposta = stringParaBinario($TAM_MAX_BYTES);
         socket_write($spawn, $resposta, strlen ($resposta));
     }
     else
     {
-        EscreveNoLog("Mensagem {" .ObterMenssagemDoQuadro($quadro) ."} recebida");
+        escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
         socket_write($spawn, $quadro, strlen ($quadro));
     }
 }while ($spawn != FALSE);
 
 socket_close($spawn);
-EscreveNoLog("Conexão encerrada");
+escreveNoLog("Conexão encerrada");
 ?>

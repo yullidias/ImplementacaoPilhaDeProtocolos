@@ -30,7 +30,7 @@ function getMAC($ip, &$macIp)
         }while(strlen($mac) < 17);
         $macIp[$ip] = $mac;
     }
-    EscreveNoLog("Protocolo ARP o ip " . $ip . " pertence ao MAC " . $mac);
+    escreveNoLog("Protocolo ARP o ip " . $ip . " pertence ao MAC " . $mac);
     return $mac;
 }
 
@@ -66,11 +66,11 @@ function enviarMessagemServidor($socket, $mensagem)
 
     if (socket_write($socket, $mensagem, strlen($mensagem)) === FALSE) //retorna 0 quando os bits são escritos o operador === é usando para garantir que retornou falso e não 0
     {
-        EscreveNoLog("Mensagem não enviada");
+        escreveNoLog("Mensagem não enviada");
     }
     else
     {
-        EscreveNoLog("Mensagem enviada");
+        escreveNoLog("Mensagem enviada");
     }
 }
 
@@ -79,12 +79,12 @@ function receberRespostaServidor($socket, $limiteMensagem)
     $resposta = socket_read ($socket, intval($limiteMensagem));
     if( $resposta === FALSE)
     {
-        EscreveNoLog("Resposta não recebida");
+        escreveNoLog("Resposta não recebida");
         return null;
     }
     else
     {
-        EscreveNoLog("Resposta recebida");
+        escreveNoLog("Resposta recebida");
         return $resposta;
     }
 }
@@ -94,32 +94,32 @@ function timestamp()
     $data = $now['mday'] . ' ' . $now['month'] . ' ' . $now['year'] . ' ' . $now['hours'] . ':' . $now['minutes'] . ':' . $now['seconds'] ." ";
     return $data;
 }
-function EscreveNoLog($mensagem)
+function escreveNoLog($mensagem)
 {
     file_put_contents ( $GLOBALS['ARQUIVO_LOG'], timestamp() ."[Física: Cliente] " . $mensagem . ". \n", FILE_APPEND | LOCK_EX); //lock_ex lock exclusivo
 
 }
-function EnviarMensagemEObterRespostaDoServidor($mensagem, $limite)
+function enviarMensagemEObterRespostaDoServidor($mensagem, $limite)
 {
     $socket = socket_create(AF_INET, SOCK_STREAM, 0);
     if ($socket === FALSE){
-        EscreveNoLog("Socket com a camada física não criado");
+        escreveNoLog("Socket com a camada física não criado");
     }
     else
     {
-        EscreveNoLog("Socket com a camada física criado");
+        escreveNoLog("Socket com a camada física criado");
     }
     $result = socket_connect($socket, $GLOBALS['IP_DESTINO'], $GLOBALS['PORTA_SERVIDOR_FISICA']);
     if($result === FALSE)
     {
-        EscreveNoLog("Conexão criada com a camada física");
+        escreveNoLog("Conexão criada com a camada física");
     }
     enviarMessagemServidor($socket, $mensagem);
     $resposta = receberRespostaServidor($socket, $limite);
     socket_close($socket);
     return $resposta;
 }
-function string_to_bin($string){
+function stringParaBinario($string){
     $stringEmBinario = '';
     $arrayDeCaracter = str_split($string);
     foreach($arrayDeCaracter as $caracter){
@@ -130,7 +130,7 @@ function string_to_bin($string){
     }
     return $stringEmBinario;
 }
-function bin_to_string($sequenciaDeBits){
+function binarioParaString($sequenciaDeBits){
     $string = '';
     for($i=0; $i<(strlen($sequenciaDeBits)-1); $i+=8){
         $hex = base_convert(substr($sequenciaDeBits, $i, 8), 2, 16);
@@ -156,7 +156,7 @@ function getIpPacote()
     $split = explode(' ', $conteudo[0]);
     return $split[0];
 }
-function MontaQuadro(&$macIp)
+function montaQuadro(&$macIp)
 {
     $ipDestino = getIpPacote();
     $mensagem = getMensagemPacote();
@@ -165,16 +165,16 @@ function MontaQuadro(&$macIp)
     $macOrigem = macParaBinario(getMAC($GLOBALS['IP_ORIGEM'], $macIp));
     $macDestino = macParaBinario(getMAC($ipDestino, $macIp));
     $tipo = '0100100101010000';//IP
-    $data = string_to_bin($mensagem);
+    $data = stringParaBinario($mensagem);
     $crc = '01000101010100100101001001001111'; //string ERRO
     return $preambulo.$sfd.$macOrigem.$macDestino.$tipo.$data.$crc;
 }
 
-$quadro = MontaQuadro($MAC_from_IP);
+$quadro = montaQuadro($MAC_from_IP);
 
-$tamMensagemEmBinario = EnviarMensagemEObterRespostaDoServidor(string_to_bin("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
-$GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = bin_to_string($tamMensagemEmBinario);
-print "limite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'];
+$tamMensagemEmBinario = enviarMensagemEObterRespostaDoServidor(stringParaBinario("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+$GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = binarioParaString($tamMensagemEmBinario);
+print "\n\nlimite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] . "\n\n";
 $N_maxTentativas = 10;
 $tentativa = 0;
 while($tentativa < $N_maxTentativas)
@@ -182,17 +182,17 @@ while($tentativa < $N_maxTentativas)
     if(rand(0,100) > 30)
     {
         $tentativa += 1;
-        EscreveNoLog("Colisão! Tentativa " . $tentativa);
+        escreveNoLog("Colisão! Tentativa " . $tentativa);
         sleep(rand(0,3));
     }
     else
     {
         $tentativa = 0;
-        $mensagem = MontaQuadro($MAC_from_IP);
-        $resposta = EnviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+        $mensagem = montaQuadro($MAC_from_IP);
+        $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
         if(strcmp($resposta, $mensagem) == 0)
         {
-            print "\n\nPacote recebido com sucesso!";
+            print "\n\nPacote recebido com sucesso!\n\n";
         }
         break;
     }
@@ -201,6 +201,6 @@ while($tentativa < $N_maxTentativas)
 
 if($tentativa == $N_maxTentativas)
 {
-    EscreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
+    escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
 
