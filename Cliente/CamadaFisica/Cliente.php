@@ -100,10 +100,18 @@ function receberRespostaServidor($socket, $limiteMensagem)
 function conectarAoServidor($host, $port, $mensagem, $limite)
 {
     $log_geral = lerArquivoLog();
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Não foi possível criar o socket\n");
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);// or die("Não foi possível criar o socket\n");
+    if ($socket === false) {
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, $timestamp . " Socket create --- Erro ao criar socket --- \n", FILE_APPEND);
+        exit ("\n------\nErro ao criar socket " . socket_strerror(socket_last_error()) . "\n------\n");
+     } else {
+        echo "Socket criado com sucesso!\n"; //Exibe uma string avisando que a criacao ocorreu bem
+        $timestamp = date("Y-m-d H:i:s");
+        file_put_contents($log_geral, $timestamp . " Socket create --- Sucesso ao criar socket --- \n", FILE_APPEND);
+     }
     $result = socket_connect($socket, $host, $port);
-
-    if ($socket === false || $result == false){
+    if ($result === false){
         $timestamp = date("Y-m-d H:i:s");
         file_put_contents($log_geral, $timestamp." Conexão com servidor --- Erro ao conectar no servidor--- \n", FILE_APPEND);
         exit ("\n------\nErro ao conectar ao servidor: ".socket_strerror(socket_last_error())."\n------\n");
