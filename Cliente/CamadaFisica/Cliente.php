@@ -227,25 +227,3 @@ if($tentativa == $N_maxTentativas)
 {
     escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
-
-/*while($tentativa < $N_maxTentativas)
-{
-    if(rand(0,100) > 30)
-    {
-        $tentativa += 1;
-        escreveNoLog("Colisão! Tentativa " . $tentativa);
-        sleep(rand(0,3));
-    }
-    else
-    {
-        $tentativa = 0;
-        $mensagem = montaQuadro($MAC_from_IP);
-        $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
-        if(strcmp($resposta, $mensagem) == 0)
-        {
-            print "\n\nPacote recebido com sucesso!\n\n";
-        }
-        break;
-    }
-    sleep(1);
-}*/
