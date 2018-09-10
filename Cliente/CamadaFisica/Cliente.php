@@ -177,13 +177,37 @@ $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = binarioParaString($tamMensagemEmBinario);
 print "\n\nlimite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] . "\n\n";
 $N_maxTentativas = 10;
 $tentativa = 0;
-while($tentativa < $N_maxTentativas)
-{
-    if(rand(0,100) > 30)
-    {
+$a = array_fill(0, 10, 'null');
+//print_r($a);
+$probcolisao = (20*10)/100;//probabilidade de 20%
+$minrange = 0;
+$maxrange = 1;
+for($w = 0 ; $w < 10; $w ++) {
+    $contador = 0;
+    for($j=0; $j <= $w; $j ++){
+        if($a[$j] === 1){
+            $contador ++;
+        }
+    }
+    if($contador < $probcolisao) {
+        $a[$w] = random_int($minrange, $maxrange);
+    }
+    else{
+        $a[$w] = 0;
+    }
+}
+//print_r($a);
+$conta = 2;
+while($tentativa < $N_maxTentativas) {
+    $sorteio = random_int(0, 9);
+    //print_r($sorteio);
+    if($a[$sorteio] === 1) {
         $tentativa += 1;
+        echo "\nCOLISAO! --- Contagem aleatoria de tempo para tentar outra vez... \n";
         escreveNoLog("Colisão! Tentativa " . $tentativa);
-        sleep(rand(0,3));
+        //sleep(rand(0,3));
+        sleep($conta);
+        $conta = $conta + 2;//incrementa a contagem dos segudos ate tentar reenviar
     }
     else
     {
@@ -204,3 +228,24 @@ if($tentativa == $N_maxTentativas)
     escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
 
+/*while($tentativa < $N_maxTentativas)
+{
+    if(rand(0,100) > 30)
+    {
+        $tentativa += 1;
+        escreveNoLog("Colisão! Tentativa " . $tentativa);
+        sleep(rand(0,3));
+    }
+    else
+    {
+        $tentativa = 0;
+        $mensagem = montaQuadro($MAC_from_IP);
+        $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+        if(strcmp($resposta, $mensagem) == 0)
+        {
+            print "\n\nPacote recebido com sucesso!\n\n";
+        }
+        break;
+    }
+    sleep(1);
+}*/
