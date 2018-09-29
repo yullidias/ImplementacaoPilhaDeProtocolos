@@ -148,9 +148,9 @@ function getMensagemPacote()
 {
     $conteudo = file('../pacote.txt');
     $split = explode(' ', $conteudo[0]);
-    return $split[1];
+    return $split[0];//No momento , o pacote possui apenas o dominio a ser enviado ao servidor dns - troquei a posicao para 0
 }
-function getIpPacote()
+function getIpPacote()//Funcao nao utilizada no momento
 {
     $conteudo = file('../pacote.txt');
     $split = explode(' ', $conteudo[0]);
@@ -158,12 +158,12 @@ function getIpPacote()
 }
 function montaQuadro(&$macIp)
 {
-    $ipDestino = getIpPacote();
+    //$ipDestino = getIpPacote();
     $mensagem = getMensagemPacote();
     $preambulo = '0101';
     $sfd = '10101011'; // Delimitador de início de quadro
     $macOrigem = macParaBinario(getMAC($GLOBALS['IP_ORIGEM'], $macIp));
-    $macDestino = macParaBinario(getMAC($ipDestino, $macIp));
+    $macDestino = macParaBinario(getMAC($GLOBALS['IP_DESTINO'], $macIp));//Troquei para pegar a variave global tb
     $tipo = '0100100101010000';//IP
     $data = stringParaBinario($mensagem);
     $crc = '01000101010100100101001001001111'; //string ERRO
