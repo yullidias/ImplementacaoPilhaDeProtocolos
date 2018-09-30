@@ -99,10 +99,11 @@ do
     else
     {
         escreveNoLog("Quadro recebido");
+        $quadro = trim($quadro);
+        escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
+        socket_write($spawn, $quadro, strlen ($quadro));
     }
-    $quadro = trim($quadro);
-    escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
-    socket_write($spawn, $quadro, strlen ($quadro));
+
 }while ($spawn != FALSE);
 
 socket_close($spawn);

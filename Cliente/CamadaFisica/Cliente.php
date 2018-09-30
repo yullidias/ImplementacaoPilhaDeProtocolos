@@ -158,12 +158,11 @@ function getIpPacote()//Funcao nao utilizada no momento
     $split = explode(' ', $conteudo[0]);
     return $split[0];
 }
-function montaQuadro(&$macIp)
+function montaQuadro(&$macIp, $data = null)
 {
-    //$ipDestino = getIpPacote();
-    $mensagem = getMensagemPacote();
     $preambulo = '0101';
     $sfd = '10101011'; // Delimitador de início de quadro
+    $mensagem = $data == null ? getMensagemPacote() : $data;
     $macOrigem = macParaBinario(getMAC($GLOBALS['IP_ORIGEM'], $macIp));
     $macDestino = macParaBinario(getMAC($GLOBALS['IP_DESTINO'], $macIp));//Troquei para pegar a variave global tb
     $tipo = '0100100101010000';//IP
@@ -189,10 +188,6 @@ function criaServidorSocketCamadaSuperior()
     {
         escreveNoLog("Erro ao vincular nome para o socket");
     }
-    else
-    {
-        escreveNoLog("Vinculando um nome para o socket");
-    }
     return $socket;
 }
 
@@ -207,29 +202,28 @@ do
     else
     {
         escreveNoLog("Ouvindo a conexão");
-        print("Ouvindo a conexão");
     }
     print("Listening ...\n");
     $IsConexaoAceita = socket_accept($socketCamadaSuperior);
+    print("conexao aceita\n");
     if($IsConexaoAceita === false){
         escreveNoLog("Conexão não aceita");
     }
     else{
         escreveNoLog("Conexão aceita");
+        $pacote = socket_read($IsConexaoAceita, intval($GLOBALS['LIMITE_MAXIMO_MENSAGEM']));
+        if($pacote === FALSE)
+        {
+            escreveNoLog("Erro ao receber o quadro");
+        }
+        else
+        {
+            print("pacote: " . $pacote);
+            escreveNoLog("Quadro recebido");
+        }
+        escreveNoLog("Mensagem {" . $pacote ."} recebida da camada superior");
+        socket_write($IsConexaoAceita, "Resposta servidor CSA" , strlen ("Resposta servidor CSA"));
     }
-    print("conexao aceita\n");
-    $pacote = socket_read($IsConexaoAceita, intval($GLOBALS['LIMITE_MAXIMO_MENSAGEM']));
-    if($pacote === FALSE)
-    {
-        escreveNoLog("Erro ao receber o quadro");
-    }
-    else
-    {
-        print("pacote: " . $pacote);
-        escreveNoLog("Quadro recebido");
-    }
-    escreveNoLog("Mensagem {" . $pacote ."} recebida da camada superior");
-    socket_write($IsConexaoAceita, "Resposta servidor CSA" , strlen ("Resposta servidor CSA"));
 }while ($IsConexaoAceita != FALSE);
 socket_close($IsConexaoAceita);
 escreveNoLog("Conexão encerrada");
@@ -237,8 +231,8 @@ escreveNoLog("Conexão encerrada");
 
 
 
-/*
 
+/*
 $N_maxTentativas = 10;
 $tentativa = 0;
 while($tentativa < $N_maxTentativas) {
@@ -266,4 +260,5 @@ if($tentativa == $N_maxTentativas)
 {
     escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
+
 */
