@@ -4,7 +4,7 @@ require_relative 'functions'
 include Socket::Constants
 
 localhost = "127.0.1.1"
-port_address = 7897
+port_address = 7000
 
 socket_servidor_aplicacao = Socket.new( AF_INET, SOCK_STREAM, 0 )
 time_stamp("Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior ", "log.txt")

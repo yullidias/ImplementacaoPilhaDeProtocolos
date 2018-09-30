@@ -1,0 +1,33 @@
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 19:20
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 19:20
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 19:20
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 20:34
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 20:34
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 20:34
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 21:10
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 21:10
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 21:10
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 21:52
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 21:52
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 21:52
+Camada Aplicacao (CLIENTE): Criado socket com a camada inferior 29-09-18 21:52
+Camada Aplicacao (CLIENTE): Socket conectado com host local29-09-18 21:52
+Camada Aplicacao (CLIENTE): Enviada mensagem para camada inferior29-09-18 21:52
+Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior 29-09-18 21:52
+Camada Aplicacao (CLIENTE): Criado socket com a camada inferior 29-09-18 21:53
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 21:53
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 21:53
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 21:53
+Camada Aplicacao (CLIENTE): Criado socket com a camada inferior 29-09-18 21:53
+Camada Aplicacao (CLIENTE): Socket conectado com host local29-09-18 21:53
+Camada Aplicacao (CLIENTE): Enviada mensagem para camada inferior29-09-18 21:53
+Camada Aplicacao (CLIENTE): Encerrando conexao 29-09-18 21:53
+Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior 29-09-18 21:53
+Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 21:54
+Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 21:54
+Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 21:54
+Camada Aplicacao (CLIENTE): Criado socket com a camada inferior 29-09-18 21:54
+Camada Aplicacao (CLIENTE): Socket conectado com host local29-09-18 21:54
+Camada Aplicacao (CLIENTE): Enviada mensagem para camada inferior29-09-18 21:54
+Camada Aplicacao (CLIENTE): Encerrando conexao 29-09-18 21:54
+Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior 29-09-18 21:54

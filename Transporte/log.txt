@@ -1,9 +1,0 @@
-Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 19:20
-Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 19:20
-Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 19:20
-Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 20:34
-Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 20:34
-Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 20:34
-Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior 29-09-18 21:10
-Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior 29-09-18 21:10
-Camada Aplicacao (SERVIDOR): Servidor escutando...29-09-18 21:10
