@@ -3,13 +3,14 @@ require_relative '../../functions'
 include Socket::Constants
 
 ArgumentoslinhaDeComando = ARGV
-if ArgumentoslinhaDeComando.length != 2
-  puts "Use: ruby2.1 Cliente.rb IpServidor PortaServidor"
+if ArgumentoslinhaDeComando.length != 3
+  puts "Use: ruby2.1 Cliente.rb IpServidor PortaServidor MensagemParaOServidorDNS"
   exit(-1)
 end
 
 SERVIDOR = ArgumentoslinhaDeComando[0]
 PORTA_SERVIDOR = ArgumentoslinhaDeComando[1]
+MENSAGEM = ArgumentoslinhaDeComando[2]
 MAQUINA = "Cliente"
 
 socket_cliente_aplicacao = Socket.new( AF_INET, SOCK_STREAM, 0 )
@@ -19,14 +20,14 @@ sockaddr = Socket.pack_sockaddr_in( PORTA_SERVIDOR, SERVIDOR )
 socket_cliente_aplicacao.connect( sockaddr )
 time_stamp(MAQUINA, "Socket conectado com host local", "log.txt")
 
-socket_cliente_aplicacao.puts "http://www.google.com/ HTTP/1.1"
+socket_cliente_aplicacao.puts MENSAGEM
 time_stamp(MAQUINA, "Enviada mensagem para camada inferior", "log.txt")
 
  data = socket_cliente_aplicacao.recvfrom( 10000 )[0].chomp
- puts "Mensagem recebida: '#{data}'"
- time_stamp(MAQUINA, "Recebida mensagem de da camadad inferior ", "log.txt")
+ puts "Resposta DNS: '#{data}' \n\n"
+ time_stamp(MAQUINA, "Resposta DNS {" + data + "}", "log.txt")
 
 socket_cliente_aplicacao.close
-time_stamp(MAQUINA, "Encerrando conexao " , "log.txt")
-puts 'conexão encerrada com sucesso'
+time_stamp(MAQUINA, "Conexao encerrada com sucesso" , "log.txt")
+
 

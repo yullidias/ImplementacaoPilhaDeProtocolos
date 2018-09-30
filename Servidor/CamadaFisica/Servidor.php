@@ -153,7 +153,7 @@ do
         escreveNoLog("Mensagem {" . $mensagem ."} recebida");
         $respostaCamadaSuperior = enviarMensagemEObterRespostaDoServidor($SERVIDOR_CAMADA_SUPERIOR, $PORTA_CAMADA_SUPERIOR, $mensagem, $TAM_MAX_BYTES);
         print("resp sup " . $respostaCamadaSuperior . "\n");
-        socket_write($spawn, $quadro, strlen ($respostaCamadaSuperior));
+        socket_write($spawn, $respostaCamadaSuperior, strlen ($respostaCamadaSuperior));
     }
 
 }while ($spawn != FALSE);

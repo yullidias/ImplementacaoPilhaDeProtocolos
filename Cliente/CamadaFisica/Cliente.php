@@ -1,8 +1,7 @@
 <?php
 
 $MEU_IP = "127.0.0.1";
-$IP_ORIGEM = "127.0.0.1";
-$IP_DESTINO = "127.0.0.1";
+$IP_SERVIDOR = "127.0.0.1";
 $PORTA_SERVIDOR_FISICA = 8080;
 $MINHA_PORTA_CAMADA_SUPERIOR = 8090;
 $ARQUIVO_LOG = "../../log.txt";
@@ -111,7 +110,7 @@ function enviarMensagemEObterRespostaDoServidor($mensagem, $limite)
     {
         escreveNoLog("Socket com a camada física criado");
     }
-    $result = socket_connect($socket, $GLOBALS['IP_DESTINO'], $GLOBALS['PORTA_SERVIDOR_FISICA']);
+    $result = socket_connect($socket, $GLOBALS['IP_SERVIDOR'], $GLOBALS['PORTA_SERVIDOR_FISICA']);
     if($result === FALSE)
     {
         escreveNoLog("Conexão criada com a camada física");
@@ -163,8 +162,8 @@ function montaQuadro(&$macIp, $data = null)
     $preambulo = '0101';
     $sfd = '10101011'; // Delimitador de início de quadro
     $mensagem = $data == null ? getMensagemPacote() : $data;
-    $macOrigem = macParaBinario(getMAC($GLOBALS['IP_ORIGEM'], $macIp));
-    $macDestino = macParaBinario(getMAC($GLOBALS['IP_DESTINO'], $macIp));//Troquei para pegar a variave global tb
+    $macOrigem = macParaBinario(getMAC($GLOBALS['MEU_IP'], $macIp));
+    $macDestino = macParaBinario(getMAC($GLOBALS['IP_SERVIDOR'], $macIp));//Troquei para pegar a variave global tb
     $tipo = '0100100101010000';//IP
     $data = stringParaBinario($mensagem);
     $crc = '01000101010100100101001001001111'; //string ERRO

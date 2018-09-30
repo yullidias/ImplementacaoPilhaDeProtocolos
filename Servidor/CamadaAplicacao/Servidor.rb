@@ -25,18 +25,16 @@ loop do
 
   data = client.recvfrom( 10000 )[0].chomp
   if data
-    puts "Mensagem recebida: '#{data}'"
-    time_stamp(maquina, "Recebida mensagem da camada inferior ", "log.txt")
-    client.puts "OK"
-    sleep 1
-    # return "200"
-  else
-    sleep 1
-    # return "400"
+    if (data =~ /[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/)
+      dominio = "www.facebook.com"
+      time_stamp(maquina, "IP " + data + "pertence ao dominio " + dominio, "log.txt")
+      client.puts dominio
+    else
+      ip = "198.168.0.20"
+      time_stamp(maquina, "O dominio " + data + "pertence ao IP " + ip, "log.txt")
+      client.puts ip
+    end
   end
-
 end
-
 socket_servidor_aplicacao.close
-time_stamp(maquina, "Encerrando conexao " , "log.txt")
-
+time_stamp(maquina, "Encerrando conexao" , "log.txt")
