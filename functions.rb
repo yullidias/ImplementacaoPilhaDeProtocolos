@@ -13,29 +13,21 @@ def write_to_file(file_name, content)
 end
 
 def descobreIP(enderecoIPperguntado)
-  #variaveis Globais
-  $enderecoIP = enderecoIPperguntado
-
-  arq = File.open("dns.txt")
+  enderecoIP = enderecoIPperguntado
+  arq = File.open("DNS.txt")
   while line = arq.gets
-    puts line
-    $resultBusca = line
-    $split = $resultBusca.split
-    puts "#{$split[0]}"
-    if ($split[1] === $enderecoIP)
-      puts "Opa!Conheco esse endereco!\n"
-      $dominioResposta = $split[0]
-      break
-    elsif ($split[1] != $enderecoIP)
-      $dominioResposta  = "Desconhecido por mim\n"
+    #puts line
+    resultBusca = line
+    split = resultBusca.split
+    #puts "#{split[0]}"
+    if (split[1] == enderecoIP)
+     # puts "Opa!Conheco esse endereco!\n"
+      arq.close
+      return split[0]
     end
   end
-  if($dominioResposta  == "Desconhecido por mim\n")
-    puts "Nao conheco o endereco desse dominio! Desculpe!\n"
-  end
-  puts "#{$dominioResposta }"
   arq.close
-  return $dominioResposta
+  return -1
 end
 
 def retornaIP(dominioPerguntado)
@@ -63,3 +55,6 @@ def retornaIP(dominioPerguntado)
   arq.close
   return enderecoIPdominio
 end
+
+dominio = descobreIP("172.217.0.35")
+puts dominio
