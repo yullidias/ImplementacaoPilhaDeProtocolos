@@ -2,6 +2,8 @@
 $ARQUIVO_LOG = "../../log.txt";
 $MEU_IP = "127.0.0.1";
 $MINHA_PORTA = 8080;
+$PORTA_CAMADA_SUPERIOR = 8070;
+$SERVIDOR_CAMADA_SUPERIOR = "127.0.0.1";
 $TAM_MAX_BYTES = '3000000';
 
 function binarioParaString($sequenciaDeBits){
@@ -52,6 +54,53 @@ function escreveNoLog($mensagem)
     file_put_contents ( $GLOBALS['ARQUIVO_LOG'], timestamp() ."[Física: Servidor] " . $mensagem . ". \n", FILE_APPEND | LOCK_EX); //lock_ex lock exclusivo
 
 }
+function enviarMessagemServidor($socket, $mensagem)
+{
+
+    if (socket_write($socket, $mensagem, strlen($mensagem)) === FALSE) //retorna 0 quando os bits são escritos o operador === é usando para garantir que retornou falso e não 0
+    {
+        escreveNoLog("Mensagem não enviada");
+    }
+    else
+    {
+        escreveNoLog("Mensagem enviada");
+    }
+}
+
+function receberRespostaServidor($socket, $limiteMensagem)
+{
+    $resposta = socket_read ($socket, intval($limiteMensagem));
+    if( $resposta === FALSE)
+    {
+        escreveNoLog("Resposta não recebida");
+        return null;
+    }
+    else
+    {
+        escreveNoLog("Resposta recebida");
+        return $resposta;
+    }
+}
+function enviarMensagemEObterRespostaDoServidor($ipServidor, $portaServidor, $mensagem, $limite)
+{
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+    if ($socket === FALSE){
+        escreveNoLog("Socket com a camada física não criado");
+    }
+    else
+    {
+        escreveNoLog("Socket com a camada física criado");
+    }
+    $result = socket_connect($socket, $ipServidor, $portaServidor);
+    if($result === FALSE)
+    {
+        escreveNoLog("Conexão criada com a camada física");
+    }
+    enviarMessagemServidor($socket, $mensagem);
+    $resposta = receberRespostaServidor($socket, $limite);
+    socket_close($socket);
+    return $resposta;
+}
 
 set_time_limit(0); //sem timeout
 $socket = socket_create(AF_INET, SOCK_STREAM, 0);
@@ -100,8 +149,11 @@ do
     {
         escreveNoLog("Quadro recebido");
         $quadro = trim($quadro);
-        escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
-        socket_write($spawn, $quadro, strlen ($quadro));
+        $mensagem = obterMenssagemDoQuadro($quadro);
+        escreveNoLog("Mensagem {" . $mensagem ."} recebida");
+        $respostaCamadaSuperior = enviarMensagemEObterRespostaDoServidor($SERVIDOR_CAMADA_SUPERIOR, $PORTA_CAMADA_SUPERIOR, $mensagem, $TAM_MAX_BYTES);
+        print("resp sup " . $respostaCamadaSuperior . "\n");
+        socket_write($spawn, $quadro, strlen ($respostaCamadaSuperior));
     }
 
 }while ($spawn != FALSE);

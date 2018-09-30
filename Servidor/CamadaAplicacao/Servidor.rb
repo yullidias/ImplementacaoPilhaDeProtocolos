@@ -3,8 +3,8 @@ require_relative 'functions'
 
 include Socket::Constants
 
-localhost = "127.0.1.1"
-port_address = 7000
+localhost = "127.0.0.1"
+port_address = 8070
 
 socket_servidor_aplicacao = Socket.new( AF_INET, SOCK_STREAM, 0 )
 time_stamp("Camada Aplicacao (SERVIDOR): Criado socket com a camada inferior ", "log.txt")
@@ -25,7 +25,7 @@ loop do
   if data
     puts "Mensagem recebida: '#{data}'"
     time_stamp("Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior ", "log.txt")
-
+    client.puts "OK"
     sleep 1
     # return "200"
   else

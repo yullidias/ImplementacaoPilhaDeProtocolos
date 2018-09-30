@@ -207,10 +207,6 @@ function comunicacaoComOServidorCamadaFisica($MAC_from_IP, $data = null)
             $tentativa = 0;
             $mensagem = montaQuadro($MAC_from_IP, $data);
             $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
-            if(strcmp($resposta, $mensagem) == 0)
-            {
-                print "\n\nRecebido com sucesso!\n\n";
-            }
             return $resposta;
         }
         sleep(1);
@@ -257,7 +253,7 @@ do
             $respostaCamadaFisica = comunicacaoComOServidorCamadaFisica($MAC_from_IP, $pacote);
             escreveNoLog("Reenviando quadro");
         }while($respostaCamadaFisica == -1);
-        socket_write($IsConexaoAceita, "Resposta servidor CSA" , strlen ("Resposta servidor CSA"));
+        socket_write($IsConexaoAceita, $respostaCamadaFisica, strlen ($respostaCamadaFisica));
     }
 }while ($IsConexaoAceita != FALSE);
 socket_close($IsConexaoAceita);
