@@ -1,10 +1,12 @@
 <?php
 
+$MEU_IP = "127.0.0.1";
 $IP_ORIGEM = "127.0.0.1";
 $IP_DESTINO = "127.0.0.1";
 $PORTA_SERVIDOR_FISICA = 8080;
+$MINHA_PORTA_CAMADA_SUPERIOR = 8090;
 $ARQUIVO_LOG = "../../log.txt";
-$LIMITE_MAXIMO_MENSAGEM = '1024';
+$LIMITE_MAXIMO_MENSAGEM = '3000000';
 $MAC_from_IP = array( "127.0.0.1" => "d0:df:9a:c4:07:ab");
 
 function getMAC($ip, &$macIp)
@@ -170,44 +172,14 @@ function montaQuadro(&$macIp)
     return $preambulo.$sfd.$macOrigem.$macDestino.$tipo.$data.$crc;
 }
 
-$quadro = montaQuadro($MAC_from_IP);
-
-$tamMensagemEmBinario = enviarMensagemEObterRespostaDoServidor(stringParaBinario("TAM"), $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
-$GLOBALS['LIMITE_MAXIMO_MENSAGEM'] = binarioParaString($tamMensagemEmBinario);
-print "\n\nlimite " . $GLOBALS['LIMITE_MAXIMO_MENSAGEM'] . "\n\n";
 $N_maxTentativas = 10;
 $tentativa = 0;
-$a = array_fill(0, 10, 'null');
-//print_r($a);
-$probcolisao = (20*10)/100;//probabilidade de 20%
-$minrange = 0;
-$maxrange = 1;
-for($w = 0 ; $w < 10; $w ++) {
-    $contador = 0;
-    for($j=0; $j <= $w; $j ++){
-        if($a[$j] === 1){
-            $contador ++;
-        }
-    }
-    if($contador < $probcolisao) {
-        $a[$w] = random_int($minrange, $maxrange);
-    }
-    else{
-        $a[$w] = 0;
-    }
-}
-//print_r($a);
-$conta = 2;
 while($tentativa < $N_maxTentativas) {
-    $sorteio = random_int(0, 9);
-    //print_r($sorteio);
-    if($a[$sorteio] === 1) {
+    if(rand(0,100) > 40)
+    {
         $tentativa += 1;
-        echo "\nCOLISAO! --- Contagem aleatoria de tempo para tentar outra vez... \n";
-        escreveNoLog("Colisão! Tentativa " . $tentativa);
-        //sleep(rand(0,3));
-        sleep($conta);
-        $conta = $conta + 2;//incrementa a contagem dos segudos ate tentar reenviar
+        EscreveNoLog("Colisão! Tentativa " . $tentativa);
+        sleep(rand(0,3));
     }
     else
     {

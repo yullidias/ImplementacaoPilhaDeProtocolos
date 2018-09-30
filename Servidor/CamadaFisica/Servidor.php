@@ -52,6 +52,7 @@ function escreveNoLog($mensagem)
     file_put_contents ( $GLOBALS['ARQUIVO_LOG'], timestamp() ."[Física: Servidor] " . $mensagem . ". \n", FILE_APPEND | LOCK_EX); //lock_ex lock exclusivo
 
 }
+
 set_time_limit(0); //sem timeout
 $socket = socket_create(AF_INET, SOCK_STREAM, 0);
 if($socket === FALSE)
@@ -99,20 +100,9 @@ do
     {
         escreveNoLog("Quadro recebido");
     }
-
     $quadro = trim($quadro);
-    $mensagem = binarioParaString($quadro);
-    if(strcmp($mensagem, "TAM") == 0)
-    {
-        escreveNoLog("Enviando limite máximo");
-        $resposta = stringParaBinario($TAM_MAX_BYTES);
-        socket_write($spawn, $resposta, strlen ($resposta));
-    }
-    else
-    {
-        escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
-        socket_write($spawn, $quadro, strlen ($quadro));
-    }
+    escreveNoLog("Mensagem {" .obterMenssagemDoQuadro($quadro) ."} recebida");
+    socket_write($spawn, $quadro, strlen ($quadro));
 }while ($spawn != FALSE);
 
 socket_close($spawn);
