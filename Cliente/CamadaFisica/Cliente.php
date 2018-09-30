@@ -191,6 +191,38 @@ function criaServidorSocketCamadaSuperior()
     return $socket;
 }
 
+function comunicacaoComOServidorCamadaFisica($MAC_from_IP, $data = null)
+{
+    $N_maxTentativas = 10;
+    $tentativa = 0;
+    while($tentativa < $N_maxTentativas) {
+        if(rand(0,100) > 40)
+        {
+            $tentativa += 1;
+            EscreveNoLog("Colisão! Tentativa " . $tentativa);
+            sleep(rand(0,3));
+        }
+        else
+        {
+            $tentativa = 0;
+            $mensagem = montaQuadro($MAC_from_IP, $data);
+            $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
+            if(strcmp($resposta, $mensagem) == 0)
+            {
+                print "\n\nRecebido com sucesso!\n\n";
+            }
+            return $resposta;
+        }
+        sleep(1);
+    }
+
+    if($tentativa == $N_maxTentativas)
+    {
+        escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
+        return -1;
+    }
+}
+
 $socketCamadaSuperior = criaServidorSocketCamadaSuperior();
 do
 {
@@ -210,55 +242,23 @@ do
         escreveNoLog("Conexão não aceita");
     }
     else{
-        escreveNoLog("Conexão aceita");
         $pacote = socket_read($IsConexaoAceita, intval($GLOBALS['LIMITE_MAXIMO_MENSAGEM']));
         if($pacote === FALSE)
         {
-            escreveNoLog("Erro ao receber o quadro");
+            escreveNoLog("Erro ao receber o pacote");
         }
         else
         {
             print("pacote: " . $pacote);
-            escreveNoLog("Quadro recebido");
+            escreveNoLog("Pacote recebido");
         }
         escreveNoLog("Mensagem {" . $pacote ."} recebida da camada superior");
+        do {
+            $respostaCamadaFisica = comunicacaoComOServidorCamadaFisica($MAC_from_IP, $pacote);
+            escreveNoLog("Reenviando quadro");
+        }while($respostaCamadaFisica == -1);
         socket_write($IsConexaoAceita, "Resposta servidor CSA" , strlen ("Resposta servidor CSA"));
     }
 }while ($IsConexaoAceita != FALSE);
 socket_close($IsConexaoAceita);
 escreveNoLog("Conexão encerrada");
-
-
-
-
-
-/*
-$N_maxTentativas = 10;
-$tentativa = 0;
-while($tentativa < $N_maxTentativas) {
-    if(rand(0,100) > 40)
-    {
-        $tentativa += 1;
-        EscreveNoLog("Colisão! Tentativa " . $tentativa);
-        sleep(rand(0,3));
-    }
-    else
-    {
-        $tentativa = 0;
-        $mensagem = montaQuadro($MAC_from_IP);
-        $resposta = enviarMensagemEObterRespostaDoServidor($mensagem, $GLOBALS['LIMITE_MAXIMO_MENSAGEM']);
-        if(strcmp($resposta, $mensagem) == 0)
-        {
-            print "\n\nPacote recebido com sucesso!\n\n";
-        }
-        break;
-    }
-    sleep(1);
-}
-
-if($tentativa == $N_maxTentativas)
-{
-    escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
-}
-
-*/
