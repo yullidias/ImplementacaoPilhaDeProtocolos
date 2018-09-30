@@ -14,14 +14,11 @@ end
 
 def descobreIP(enderecoIPperguntado)
   enderecoIP = enderecoIPperguntado
-  arq = File.open("DNS.txt")
+  arq = File.open("DNS.txt", "r")
   while line = arq.gets
-    #puts line
     resultBusca = line
     split = resultBusca.split
-    #puts "#{split[0]}"
-    if (split[1] == enderecoIP)
-     # puts "Opa!Conheco esse endereco!\n"
+    if (split[1].strip === enderecoIP.strip)
       arq.close
       return split[0]
     end
@@ -31,30 +28,16 @@ def descobreIP(enderecoIPperguntado)
 end
 
 def retornaIP(dominioPerguntado)
-  #variaveis Globais
-  $dominio = dominioPerguntado
-
-  arq = File.open("dns.txt")
+  dominio = dominioPerguntado
+  arq = File.open("DNS.txt")
   while line = arq.gets
-    puts line
-    $resultBusca = line
-    $split = $resultBusca.split
-    puts "#{$split[1]}"
-    if ($split[0] === $dominio)
-      puts "Opa!Conheco esse endereco!\n"
-      $enderecoIPdominio = $split[1]
-      break
-    elsif ($split[0] != $dominio)
-      $enderecoIPdominio = "Desconhecido por mim\n"
+    resultBusca = line
+    split = resultBusca.split
+    if (split[0].strip === dominio.strip)
+      arq.close
+      return split[1]
     end
   end
-  if($enderecoIPdominio == "Desconhecido por mim\n")
-    puts "Nao conheco o endereco desse dominio! Desculpe!\n"
-  end
-  puts "#{$enderecoIPdominio}"
   arq.close
-  return enderecoIPdominio
+  return -1
 end
-
-dominio = descobreIP("172.217.0.35")
-puts dominio
