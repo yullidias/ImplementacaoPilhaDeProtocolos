@@ -25,19 +25,26 @@ time_stamp(maquina, "Servidor escutando...", "log.txt")
 
 loop do
   client, client_addrinfo = socket_servidor_aplicacao.accept
-
-  write_to_file("ip.txt", client_addrinfo)
-
   data = client.recvfrom( 10000 )[0].chomp
   if data
-    if (data =~ /[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/)
-      dominio = "www.facebook.com"
-      time_stamp(maquina, "IP " + data + "pertence ao dominio " + dominio, "log.txt")
-      client.puts dominio
+    if (data =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
+      dominio = descobreIP(data)
+      if(dominio != -1)
+        time_stamp(maquina, "O IP " + data + " pertence ao dominio " + dominio, "log.txt")
+        client.puts dominio
+      else
+        time_stamp(maquina, "IP " + data + " não cadastrado", "log.txt")
+        client.puts "IP " + data + " nao cadastrado"
+      end
     else
-      ip = "198.168.0.20"
-      time_stamp(maquina, "O dominio " + data + "pertence ao IP " + ip, "log.txt")
-      client.puts ip
+      ip = retornaIP(data)
+      if(ip != -1)
+        time_stamp(maquina, "O dominio " + data + " pertence ao IP " + ip, "log.txt")
+        client.puts ip
+      else
+        time_stamp(maquina, "Dominio " + data + " não cadastado", "log.txt")
+        client.puts "Dominio " + data + " nao cadastado"
+      end
     end
   end
 end
