@@ -11,3 +11,55 @@ def write_to_file(file_name, content)
   fd.write(content)
   fd.close
 end
+
+def descobreIP(enderecoIPperguntado)
+  #variaveis Globais
+  $enderecoIP = enderecoIPperguntado
+
+  arq = File.open("dns.txt")
+  while line = arq.gets
+    puts line
+    $resultBusca = line
+    $split = $resultBusca.split
+    puts "#{$split[0]}"
+    if ($split[1] === $enderecoIP)
+      puts "Opa!Conheco esse endereco!\n"
+      $dominioResposta = $split[0]
+      break
+    elsif ($split[1] != $enderecoIP)
+      $dominioResposta  = "Desconhecido por mim\n"
+    end
+  end
+  if($dominioResposta  == "Desconhecido por mim\n")
+    puts "Nao conheco o endereco desse dominio! Desculpe!\n"
+  end
+  puts "#{$dominioResposta }"
+  arq.close
+  return $dominioResposta
+end
+
+def retornaIP(dominioPerguntado)
+  #variaveis Globais
+  $dominio = dominioPerguntado
+
+  arq = File.open("dns.txt")
+  while line = arq.gets
+    puts line
+    $resultBusca = line
+    $split = $resultBusca.split
+    puts "#{$split[1]}"
+    if ($split[0] === $dominio)
+      puts "Opa!Conheco esse endereco!\n"
+      $enderecoIPdominio = $split[1]
+      break
+    elsif ($split[0] != $dominio)
+      $enderecoIPdominio = "Desconhecido por mim\n"
+    end
+  end
+  if($enderecoIPdominio == "Desconhecido por mim\n")
+    puts "Nao conheco o endereco desse dominio! Desculpe!\n"
+  end
+  puts "#{$enderecoIPdominio}"
+  arq.close
+  return enderecoIPdominio
+end
