@@ -172,6 +172,73 @@ function montaQuadro(&$macIp)
     return $preambulo.$sfd.$macOrigem.$macDestino.$tipo.$data.$crc;
 }
 
+function criaServidorSocketCamadaSuperior()
+{
+    set_time_limit(0); //sem timeout
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+    if($socket === FALSE)
+    {
+        escreveNoLog("Socket com a camada superior não criado");
+    }
+    else
+    {
+        escreveNoLog("Socket com a camada superior criado");
+    }
+
+    if(socket_bind($socket, $GLOBALS['MEU_IP'], $GLOBALS['MINHA_PORTA_CAMADA_SUPERIOR']) === FALSE)
+    {
+        escreveNoLog("Erro ao vincular nome para o socket");
+    }
+    else
+    {
+        escreveNoLog("Vinculando um nome para o socket");
+    }
+    return $socket;
+}
+
+$socketCamadaSuperior = criaServidorSocketCamadaSuperior();
+do
+{
+    $result = socket_listen($socketCamadaSuperior);
+    if($result === false)
+    {
+        escreveNoLog("Erro ao ouvir conexão");
+    }
+    else
+    {
+        escreveNoLog("Ouvindo a conexão");
+        print("Ouvindo a conexão");
+    }
+    print("Listening ...\n");
+    $IsConexaoAceita = socket_accept($socketCamadaSuperior);
+    if($IsConexaoAceita === false){
+        escreveNoLog("Conexão não aceita");
+    }
+    else{
+        escreveNoLog("Conexão aceita");
+    }
+    print("conexao aceita\n");
+    $pacote = socket_read($IsConexaoAceita, intval($GLOBALS['LIMITE_MAXIMO_MENSAGEM']));
+    if($pacote === FALSE)
+    {
+        escreveNoLog("Erro ao receber o quadro");
+    }
+    else
+    {
+        print("pacote: " . $pacote);
+        escreveNoLog("Quadro recebido");
+    }
+    escreveNoLog("Mensagem {" . $pacote ."} recebida da camada superior");
+    socket_write($IsConexaoAceita, "Resposta servidor CSA" , strlen ("Resposta servidor CSA"));
+}while ($IsConexaoAceita != FALSE);
+socket_close($IsConexaoAceita);
+escreveNoLog("Conexão encerrada");
+
+
+
+
+/*
+
 $N_maxTentativas = 10;
 $tentativa = 0;
 while($tentativa < $N_maxTentativas) {
@@ -199,3 +266,4 @@ if($tentativa == $N_maxTentativas)
 {
     escreveNoLog("Número máximo de tentativas para enviar o pacote foi atingido");
 }
+*/
