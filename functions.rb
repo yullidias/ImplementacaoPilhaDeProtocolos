@@ -1,8 +1,8 @@
 
-def time_stamp(str, file_name)
-  now = Time.new.strftime("%d-%m-%y %H:%M")
+def time_stamp(maquina, mensagem, file_name)
+  now = Time.new.strftime("%d %B %Y %H:%M:%S")
   log = File.open("../../" + file_name , "a")
-  log.puts(str + now.to_str + "\n")
+  log.puts(now.to_str  + " [Aplicação: " + maquina + "] " + mensagem + "\n")
   log.close
 end
 
