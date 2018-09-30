@@ -16,21 +16,23 @@ time_stamp("Camada Aplicacao (SERVIDOR): Bind do socket com a camada inferior ",
 socket_servidor_aplicacao.listen( 5 )
 time_stamp("Camada Aplicacao (SERVIDOR): Servidor escutando...", "log.txt")
 
-client, client_addrinfo = socket_servidor_aplicacao.accept
-# p client_addrinfo
+loop do
+  client, client_addrinfo = socket_servidor_aplicacao.accept
 
-write_to_file("ip.txt", client_addrinfo)
+  write_to_file("ip.txt", client_addrinfo)
 
-data = client.recvfrom( 10000 )[0].chomp
-if data
-  puts "Mensagem recebida: '#{data}'"
-  time_stamp("Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior ", "log.txt")
+  data = client.recvfrom( 10000 )[0].chomp
+  if data
+    puts "Mensagem recebida: '#{data}'"
+    time_stamp("Camada Aplicacao (SERVIDOR): recebida mensagem da camada inferior ", "log.txt")
 
-  sleep 1
-  return "200"
-else
-  sleep 1
-  return "400"
+    sleep 1
+    # return "200"
+  else
+    sleep 1
+    # return "400"
+  end
+
 end
 
 socket_servidor_aplicacao.close
