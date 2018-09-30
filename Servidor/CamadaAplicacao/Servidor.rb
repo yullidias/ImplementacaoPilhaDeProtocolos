@@ -1,17 +1,22 @@
 require 'socket'
 require_relative '../../functions'
-
 include Socket::Constants
+
+ArgumentoslinhaDeComando = ARGV
+if ArgumentoslinhaDeComando.length != 1
+  puts "Use: ruby2.1 Servidor.rb IpServidorDNS"
+  exit(-1)
+end
 
 maquina = "Servidor"
 
-localhost = "127.0.0.1"
+meuIp = ArgumentoslinhaDeComando[0]
 port_address = 8070
 
 socket_servidor_aplicacao = Socket.new( AF_INET, SOCK_STREAM, 0 )
 time_stamp(maquina, "Criado socket com a camada inferior", "log.txt")
 
-sockaddr = Socket.pack_sockaddr_in( port_address, localhost )
+sockaddr = Socket.pack_sockaddr_in( port_address, meuIp )
 socket_servidor_aplicacao.bind( sockaddr )
 time_stamp(maquina, "Bind do socket com a camada inferior", "log.txt")
 

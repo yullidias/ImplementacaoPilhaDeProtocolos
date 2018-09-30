@@ -1,9 +1,16 @@
 <?php
+
+if( count($argv) != 3)
+{
+    print("Use: php7.0 Servidor.php MeuIP IpServidorDNS\n\n");
+    exit(-1);
+}
+
+$MEU_IP = $argv[1];
+$SERVIDOR_CAMADA_SUPERIOR = $argv[2];
 $ARQUIVO_LOG = "../../log.txt";
-$MEU_IP = "127.0.0.1";
 $MINHA_PORTA = 8080;
 $PORTA_CAMADA_SUPERIOR = 8070;
-$SERVIDOR_CAMADA_SUPERIOR = "127.0.0.1";
 $TAM_MAX_BYTES = '3000000';
 
 function binarioParaString($sequenciaDeBits){

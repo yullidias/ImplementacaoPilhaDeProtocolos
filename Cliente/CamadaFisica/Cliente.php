@@ -1,7 +1,13 @@
 <?php
 
-$MEU_IP = "127.0.0.1";
-$IP_SERVIDOR = "127.0.0.1";
+if( count($argv) != 3)
+{
+    print("Use: php7.0 Cliente.php MeuIP IpServidorDNS\n\n");
+    exit(-1);
+}
+
+$MEU_IP = $argv[1];
+$IP_SERVIDOR = $argv[2];
 $PORTA_SERVIDOR_FISICA = 8080;
 $MINHA_PORTA_CAMADA_SUPERIOR = 8090;
 $ARQUIVO_LOG = "../../log.txt";

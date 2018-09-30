@@ -3,14 +3,14 @@ require_relative '../../functions'
 include Socket::Constants
 
 ArgumentoslinhaDeComando = ARGV
-if ArgumentoslinhaDeComando.length != 3
-  puts "Use: ruby2.1 Cliente.rb IpServidor PortaServidor MensagemParaOServidorDNS"
+if ArgumentoslinhaDeComando.length != 2
+  puts "Use: ruby2.1 Cliente.rb IpServidorDNS MensagemParaOServidorDNS"
   exit(-1)
 end
 
 SERVIDOR = ArgumentoslinhaDeComando[0]
-PORTA_SERVIDOR = ArgumentoslinhaDeComando[1]
-MENSAGEM = ArgumentoslinhaDeComando[2]
+PORTA_SERVIDOR = 8090
+MENSAGEM = ArgumentoslinhaDeComando[1]
 MAQUINA = "Cliente"
 
 socket_cliente_aplicacao = Socket.new( AF_INET, SOCK_STREAM, 0 )
