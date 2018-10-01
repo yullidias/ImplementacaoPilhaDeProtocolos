@@ -1,3 +1,4 @@
 www.google.com.br 172.217.0.35
 www.cefetmg.br 200.131.3.227
 www.ufmg.br 150.164.250.1
+www.globo.com 186.192.90.5
