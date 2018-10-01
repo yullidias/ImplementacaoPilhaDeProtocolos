@@ -2,3 +2,7 @@ www.google.com.br 172.217.0.35
 www.cefetmg.br 200.131.3.227
 www.ufmg.br 150.164.250.1
 www.globo.com 186.192.90.5
+www.ebay.com 66.135.216.190
+www.amazon.com 176.32.103.205
+www.ubisoft.com 216.98.56.218
+www.netflix.com 34.251.239.113
