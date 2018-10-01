@@ -1,4 +1,5 @@
 require 'socket'
+#require 'resolv'
 require_relative '../../functions'
 include Socket::Constants
 
