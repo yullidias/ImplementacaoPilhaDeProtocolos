@@ -29,6 +29,7 @@ loop do
   if data
     if (data =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
       dominio = descobreIP(data)
+      #dominio = puts Resolv.getname (data)   
       if(dominio != -1)
         time_stamp(maquina, "O IP " + data + " pertence ao dominio " + dominio, "log.txt")
         client.puts dominio
@@ -38,6 +39,7 @@ loop do
       end
     else
       ip = retornaIP(data)
+      #ip = puts Resolv.getaddresses (data)     
       if(ip != -1)
         time_stamp(maquina, "O dominio " + data + " pertence ao IP " + ip, "log.txt")
         client.puts ip
