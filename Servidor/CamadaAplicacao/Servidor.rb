@@ -31,8 +31,12 @@ loop do
   if data
     if (data =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
       dominio = descobreIP(data)
-      #dominio = puts Resolv.getname (data)   
-      resp = montagemAnswer(data,dominio) #add
+      #dominio = "#{Resolv.getname (data)}"
+      if(dominio == nil )
+        dominio = ' '
+      end
+      resp = "#{montagemAnswer(data,dominio)}" #add
+      
       if(dominio != -1)
         time_stamp(maquina, "O IP " + data + " pertence ao dominio " + dominio, "log.txt")
         client.puts resp #alterado de dominio para resp
@@ -41,8 +45,11 @@ loop do
         client.puts "IP " + data + " nao cadastrado"
       end
     else
-      ip = retornaIP(data)
-      #ip = puts Resolv.getaddresses (data) 
+      ip = "#{retornaIP(data)}"
+      #ip = "#{Resolv.getaddresses (data)}"
+      if(ip == nil )
+        ip = ' '
+      end
       resp1 = montagemAnswer(data,ip) #add
       if(ip != -1)
         time_stamp(maquina, "O dominio " + data + " pertence ao IP " + ip, "log.txt")
