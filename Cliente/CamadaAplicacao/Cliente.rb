@@ -20,10 +20,13 @@ sockaddr = Socket.pack_sockaddr_in( PORTA_SERVIDOR, SERVIDOR )
 socket_cliente_aplicacao.connect( sockaddr )
 time_stamp(MAQUINA, "Socket conectado com host local", "log.txt")
 
-socket_cliente_aplicacao.puts MENSAGEM
+colocaNaMensagem = montagemRequisicao(MENSAGEM) #coloca no padrao da rfc1035
+
+socket_cliente_aplicacao.puts colocaNaMensagem #envia padrao para socket ao inves da MENSAGEM
 time_stamp(MAQUINA, "Enviada mensagem para camada inferior", "log.txt")
 
- data = socket_cliente_aplicacao.recvfrom( 10000 )[0].chomp
+ mensagem1 = socket_cliente_aplicacao.recvfrom( 10000 )[0].chomp #alteracao da variavel data por mensagem 1
+ data = leituraDaResposta(mensagem1) #add
  puts "Resposta DNS: '#{data}' \n\n"
  time_stamp(MAQUINA, "Resposta DNS {" + data + "}", "log.txt")
 
