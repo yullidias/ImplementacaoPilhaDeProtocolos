@@ -26,24 +26,27 @@ time_stamp(maquina, "Servidor escutando...", "log.txt")
 
 loop do
   client, client_addrinfo = socket_servidor_aplicacao.accept
-  data = client.recvfrom( 10000 )[0].chomp
+  mensagem2 = client.recvfrom( 10000 )[0].chomp #mudanca da variavel data por mensagem2
+  data = leituraDaQuestao(mensagem2) #add
   if data
     if (data =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
       dominio = descobreIP(data)
       #dominio = puts Resolv.getname (data)   
+      resp = montagemAnswer(data,dominio) #add
       if(dominio != -1)
         time_stamp(maquina, "O IP " + data + " pertence ao dominio " + dominio, "log.txt")
-        client.puts dominio
+        client.puts resp #alterado de dominio para resp
       else
         time_stamp(maquina, "IP " + data + " não cadastrado", "log.txt")
         client.puts "IP " + data + " nao cadastrado"
       end
     else
       ip = retornaIP(data)
-      #ip = puts Resolv.getaddresses (data)     
+      #ip = puts Resolv.getaddresses (data) 
+      resp1 = montagemAnswer(data,ip) #add
       if(ip != -1)
         time_stamp(maquina, "O dominio " + data + " pertence ao IP " + ip, "log.txt")
-        client.puts ip
+        client.puts resp1 #alteraddo de ip para resp1
       else
         time_stamp(maquina, "Dominio " + data + " não cadastado", "log.txt")
         client.puts "Dominio " + data + " nao cadastado"
