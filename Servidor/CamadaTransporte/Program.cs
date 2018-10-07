@@ -13,57 +13,61 @@ namespace TCPUDPServer
   {
     static void Main(string[] args)
     {
-      TcpListener tcpServer = null;
-      UdpClient   udpServer = null;
-      int         port      = 59567;
+      TcpListener servidorTCP = null;
+      UdpClient   servidorUDP = null;
+      int         porta      = 59567;
 
-      Console.WriteLine(string.Format("Starting TCP and UDP servers on port {0}...", port));
+      Console.WriteLine(string.Format("Iniciando conexão do servidor TCP e UDP na porta {0}...", porta));
 
       try
       {
-        udpServer = new UdpClient(port);
-        tcpServer = new TcpListener(IPAddress.Any, port);
+        // Carrega um servidor UDP e TCP em cada thread.
+        servidorUDP = new UdpClient(porta);
+        servidorTCP = new TcpListener(IPAddress.Any, porta);
 
-        var udpThread          = new Thread(new ParameterizedThreadStart(UDPServerProc));
+        var udpThread = new Thread(new ParameterizedThreadStart(UDPServerProc));
         udpThread.IsBackground = true;
-        udpThread.Name         = "UDP server thread";
-        udpThread.Start(udpServer);
+        udpThread.Name = "Thread do servidor UDP";
+        udpThread.Start(servidorUDP);
 
-        var tcpThread          = new Thread(new ParameterizedThreadStart(TCPServerProc));
+        var tcpThread = new Thread(new ParameterizedThreadStart(TCPServerProc));
         tcpThread.IsBackground = true;
-        tcpThread.Name         = "TCP server thread";
-        tcpThread.Start(tcpServer);
+        tcpThread.Name = "Thread do servidor TCP";
+        tcpThread.Start(servidorTCP);
 
-        Console.WriteLine("Press <ENTER> to stop the servers.");
+        Console.WriteLine("Pressionar <ENTER> para finalizar os servidores.");
         Console.ReadLine();
       }
       catch (Exception ex)
       {
-        Console.WriteLine("Main exception: " + ex);
+        Console.WriteLine("ERROR: -> " + ex);
       }
       finally
       {
-        if (udpServer != null)
-          udpServer.Close();
+        if (servidorUDP != null)
+          servidorUDP.Close();
 
-        if (tcpServer != null)
-          tcpServer.Stop();
+        if (servidorTCP != null)
+          servidorTCP.Stop();
       }
 
-      Console.WriteLine("Press <ENTER> to exit.");
+      Console.WriteLine("Pressionar <ENTER> para sair.");
       Console.ReadLine();
     }
 
     private static void UDPServerProc(object arg)
     {
-      Console.WriteLine("UDP server thread started");
+      Console.WriteLine("Thread do servidor UDP inicializada.");
 
       try
       {
-        UdpClient server = (UdpClient)arg;
+        // Recebe a instância do servidor UDP como argumento para ser executado na thread.
+        UdpClient server = (UdpClient) arg;
         IPEndPoint remoteEP;
         byte[] buffer;
 
+        // Thread fica esperando pelos dados enviados por algum cliente conectado.
+        // Os bytes que chegam são impressos no console.
         for(;;)
         {
           remoteEP = null;
@@ -71,6 +75,7 @@ namespace TCPUDPServer
 
           if (buffer != null && buffer.Length > 0)
           {
+            // TODO: Aqui temos que entregar os dados para a camada de aplicação.
             Console.WriteLine("UDP: " + Encoding.ASCII.GetString(buffer));
           }
         }
@@ -78,28 +83,31 @@ namespace TCPUDPServer
       catch (SocketException ex)
       {
         if(ex.ErrorCode != 10004) // unexpected
-          Console.WriteLine("UDPServerProc exception: " + ex);
+          Console.WriteLine("Erro no UDPServerProc: " + ex);
       }
       catch (Exception ex)
       {
-        Console.WriteLine("UDPServerProc exception: " + ex);
+        Console.WriteLine("Erro no UDPServerProc: " + ex);
       }
 
-      Console.WriteLine("UDP server thread finished");
+      Console.WriteLine("Thread do servidor UDP finalizada.");
     }
 
     private static void TCPServerProc(object arg)
     {
-      Console.WriteLine("TCP server thread started");
+      Console.WriteLine("Thread do servidor TCP inicializada.");
 
       try
       {
+        // Recebe a instância do servidor TCP como argumento e chama o método start() para inicializar.
         TcpListener server = (TcpListener)arg;
         byte[]      buffer = new byte[2048];
         int         count; 
 
         server.Start();
 
+        // Thread fica esperando pelos dados enviados por algum cliente conectado.
+        // Os bytes que chegam são impressos no console.
         for(;;)
         {
           TcpClient client = server.AcceptTcpClient();
@@ -108,6 +116,7 @@ namespace TCPUDPServer
           {
             while ((count = stream.Read(buffer, 0, buffer.Length)) != 0)
             {
+              // TODO: Aqui temos que entregar os dados para a camada de aplicação.
               Console.WriteLine("TCP: " + Encoding.ASCII.GetString(buffer, 0, count));
             }
           }
@@ -117,14 +126,14 @@ namespace TCPUDPServer
       catch (SocketException ex)
       {
         if (ex.ErrorCode != 10004) // unexpected
-          Console.WriteLine("TCPServerProc exception: " + ex);
+          Console.WriteLine("Erro no TCPServerProc: " + ex);
       }
       catch (Exception ex)
       {
-        Console.WriteLine("TCPServerProc exception: " + ex);
+        Console.WriteLine("Erro no TCPServerProc: " + ex);
       }
 
-      Console.WriteLine("TCP server thread finished");
+      Console.WriteLine("Thread do servidor TCP finalizada.");
     }
   }
 }
