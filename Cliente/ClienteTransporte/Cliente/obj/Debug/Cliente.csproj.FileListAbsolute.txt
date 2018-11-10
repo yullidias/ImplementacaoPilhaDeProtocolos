@@ -1,0 +1,6 @@
+/home/mas/Documents/Mariana/Cliente/Cliente/bin/Debug/Cliente.exe
+/home/mas/Documents/Mariana/Cliente/Cliente/bin/Debug/Cliente.pdb
+/home/mas/Documents/Mariana/Cliente/Cliente/obj/Debug/Cliente.csprojAssemblyReference.cache
+/home/mas/Documents/Mariana/Cliente/Cliente/obj/Debug/Cliente.csproj.CoreCompileInputs.cache
+/home/mas/Documents/Mariana/Cliente/Cliente/obj/Debug/Cliente.exe
+/home/mas/Documents/Mariana/Cliente/Cliente/obj/Debug/Cliente.pdb
