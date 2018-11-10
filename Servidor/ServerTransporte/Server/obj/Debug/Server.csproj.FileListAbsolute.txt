@@ -1,0 +1,6 @@
+/home/mas/Documents/Mariana/Server/Server/bin/Debug/Server.exe
+/home/mas/Documents/Mariana/Server/Server/bin/Debug/Server.pdb
+/home/mas/Documents/Mariana/Server/Server/obj/Debug/Server.csprojAssemblyReference.cache
+/home/mas/Documents/Mariana/Server/Server/obj/Debug/Server.csproj.CoreCompileInputs.cache
+/home/mas/Documents/Mariana/Server/Server/obj/Debug/Server.exe
+/home/mas/Documents/Mariana/Server/Server/obj/Debug/Server.pdb
