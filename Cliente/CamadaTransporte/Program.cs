@@ -1,88 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCPUDPClient
+namespace Cliente
 {
-    class Program
+    internal class Program
     {
-        // Teste de envio de dados para o servidor TCP e UDP
+        
         static void Main(string[] args)
         {
-            UdpClient udpClient = null;
-            TcpClient tcpClient = null;
-            NetworkStream tcpStream = null;
-            
-            int porta = 59567;
+            string ipServidor = "192.168.0.16";
+            int portaServidor = 11000;
+            byte[] respostaServidor = new byte[1024]; 
+            // Establish the remote endpoint for the socket.  
+            // This example uses port 11000 on the local computer.  
+            IPAddress ipAddress = IPAddress.Parse(ipServidor);
+            IPEndPoint remoteEP = new IPEndPoint(ipAddress, portaServidor);  
+  
+            // Create a TCP/IP  socket.  
+            Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp );  
+  
+            sender.Connect(remoteEP);  
 
-            ConsoleKeyInfo key;
-            bool executar = true;
-            byte[] buffer;
+            Console.WriteLine("Socket connected to {0}",  
+                sender.RemoteEndPoint.ToString());  
 
-            Console.WriteLine(string.Format("Inicializa uma conexão cliente com os servidor TCP e UDP inicializados na porta {0}...", porta));
+            byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");  
 
-            try
-            {
-                udpClient = new UdpClient();
+            sender.Send(msg);  
 
-                // Cria uma instância do cliente para o endpoint do servidor UDP em execução.
-                udpClient.Connect(IPAddress.Loopback, porta);
+            int bytesRecebidos = sender.Receive(respostaServidor);  
+            Console.WriteLine("Echoed test = {0}",  
+                Encoding.ASCII.GetString(respostaServidor,0,bytesRecebidos));  
 
-                // Cria uma instância do cliente para o endpoint do servidor TCP em execução.
-                tcpClient = new TcpClient();
-                tcpClient.Connect(IPAddress.Loopback, porta);
-
-                while (executar)
-                {
-                    Console.WriteLine("Pressione 'T' para testar o envido de dados TCP, 'U' para testar o envio de dados via UDP ou 'X' para sair.");
-                    key = Console.ReadKey(true);
-
-                    switch (key.Key)
-                    {
-                        case ConsoleKey.X:
-                            executar = false;
-                            break;
-
-                        case ConsoleKey.U:
-                            // Envia a hora atual usando o UDP
-                            buffer = Encoding.ASCII.GetBytes(DateTime.Now.ToString("HH:mm:ss.fff"));
-                            udpClient.Send(buffer, buffer.Length);
-                            break;
-
-                        case ConsoleKey.T:
-                            // Envia a hora atual usando o TCP
-                            buffer = Encoding.ASCII.GetBytes(DateTime.Now.ToString("HH:mm:ss.fff"));
-
-                            if (tcpStream == null)
-                                tcpStream = tcpClient.GetStream();
-
-                            tcpStream.Write(buffer, 0, buffer.Length);
-                            break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("ERRO: -> " + ex);
-            }
-            finally
-            {
-                if (udpClient != null)
-                    udpClient.Close();
-
-                if (tcpStream != null)
-                    tcpStream.Close();
-
-                if (tcpClient != null)
-                    tcpClient.Close();
-            }
-
-            Console.WriteLine("Pressione <ENTER> para sair.");
-            Console.ReadLine();
+            // Release the socket.  
+            sender.Shutdown(SocketShutdown.Both);              
         }
     }
 }

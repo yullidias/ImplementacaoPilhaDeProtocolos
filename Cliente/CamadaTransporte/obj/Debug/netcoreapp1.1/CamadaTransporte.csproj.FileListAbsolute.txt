@@ -1,0 +1,8 @@
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/bin/Debug/netcoreapp1.1/CamadaTransporte.deps.json
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/bin/Debug/netcoreapp1.1/CamadaTransporte.runtimeconfig.json
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/bin/Debug/netcoreapp1.1/CamadaTransporte.runtimeconfig.dev.json
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/bin/Debug/netcoreapp1.1/CamadaTransporte.dll
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/bin/Debug/netcoreapp1.1/CamadaTransporte.pdb
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/obj/Debug/netcoreapp1.1/CamadaTransporte.AssemblyInfo.cs
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/obj/Debug/netcoreapp1.1/CamadaTransporte.dll
+/root/Desktop/GitHub/ImplementacaoPilhaDeProtocolos/Cliente/CamadaTransporte/obj/Debug/netcoreapp1.1/CamadaTransporte.pdb
