@@ -11,6 +11,66 @@ namespace Server
 {
     internal class Program
     {
+        public enum bitControle { URG, ACK, EOL, RST, SYN, FIN};
+
+        public static string getControle(bool ack, bool syn, bool fin)
+        {
+            string controle = "0"; //URG, ACK, EOL, RST, SYN, FIN
+            if(ack) controle += "1"; else controle += "0";
+            controle += "00";                
+            if(syn) controle += "1"; else controle += "0";
+            if(fin) controle += "1"; else controle += "0";
+            return controle;
+        }
+        
+        public static byte[] montaSegmentoTCP(int portaOrigem, int portaDestino, int seq, int ack,
+                                    bool ackControl, bool synControl, bool finControl, int rwnd, 
+                                    string dados)
+        {
+            Console.WriteLine("monta segmento");
+            string s = "";
+            string po = portaOrigem.ToString();            
+            if(po.Length < 5) { while(po.Length < 5) { po = po.Insert(0, "0"); } };            
+            s += po;
+            string pd = portaDestino.ToString(); 
+            if(pd.Length < 5) while(pd.Length < 5) pd = pd.Insert(0, "0");           
+            s += pd ;
+            s += seq.ToString();
+            s += ack.ToString();
+            s += "0110"; //offset(4 bits) - número de palavras de 32 bits no cabeçalho
+            s += "000000"; //reserved(6 bits) - valor fixo de 0            
+            s += getControle(ackControl, synControl, finControl);
+            string s_rwnd = rwnd.ToString();
+            if(s_rwnd.Length < 2) while(s_rwnd.Length < 2) s_rwnd = s_rwnd.Insert(0, "0");           
+            s += s_rwnd; //janela(16bits) - nº de octetos que o remetente do segmento está disposto a aceitar
+            s += "1111000011110000"; //checksum
+            s += "0000000000000000"; //Urgent Pointer
+            s += "0000000000000000"; //options tamanho variável
+            s += "0000000000000000"; //padding - garante o tamanho de 32 bits
+            s += dados; //32 bits
+            return Encoding.UTF8.GetBytes(s);
+        }
+        public static void decodificaSegmentoTCP(string pacote, out string portaOrigem, out string portaDestino, 
+                                                    out string seq, out string ack, out string offset, out string reserved,
+                                                    out string ackControl, out string synControl, out string finControl, out string rwnd)
+        {
+            int index = 0;
+            Console.WriteLine("pacote: {0}", pacote);
+            portaOrigem = pacote.Substring(0, 5); index += 5;            
+            portaDestino = pacote.Substring(index, 5); index += 5;
+            seq = pacote.Substring(index, 1); index += 1;
+            ack = pacote.Substring(index, 1); index += 1;
+            offset = pacote.Substring(index, 4); index += 4;//offset(4 bits) - número de palavras de 32 bits no cabeçalho            
+            reserved = pacote.Substring(index, 6); index += 6; //reserved(6 bits) - valor fixo de 0            
+            index += 1; //pula URG
+            ackControl = pacote.Substring(index, 1); index += 1;
+            index += 2; //pula EOL, RST
+            synControl = pacote.Substring(index, 1); index += 1;
+            finControl = pacote.Substring(index, 1); index += 1;
+            rwnd = pacote.Substring(index, 2); index += 2; //janela(16bits) - nº de octetos que o remetente do segmento está disposto a aceitar            
+            Console.WriteLine("PO {0} PD {1} SEQ {2} ACK {3} OFFSET {4} RESERVED {5} ACKC{6} SYNC{7} FINC{8} RWND{9} ",portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd);
+        }
+
         public static void Main(string[] args)
         {
             string datagrama = null;  
@@ -18,7 +78,9 @@ namespace Server
             int minhaPorta = 11000;
             string meuIP = "192.168.0.16";
             IPAddress ipAddress = IPAddress.Parse(meuIP); 
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, minhaPorta);  
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, minhaPorta); 
+
+            string portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd;
           
             Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp );  
          
@@ -29,25 +91,16 @@ namespace Server
                 Socket MeuSocket = listener.Accept();  
                 datagrama = null;  
   
-                // An incoming connection needs to be processed.  
-                while (true) {  
-                    int bytesRec = MeuSocket.Receive(bytes);  
-                    datagrama += Encoding.ASCII.GetString(bytes,0,bytesRec);  
-                    if (datagrama.IndexOf("<EOF>") > -1) {  
-                        break;  
-                    }  
-                }  
-                // Show the data on the console.  
+                MeuSocket.Receive(bytes, SocketFlags.None);  
+                datagrama = Encoding.UTF8.GetString(bytes);  
+                
+                byte[] resposta = Encoding.UTF8.GetBytes(datagrama);
+                decodificaSegmentoTCP(datagrama, out portaOrigem, out portaDestino, out seq, out ack, out offset, out reserved, out ackControl, out synControl, out finControl, out rwnd);
                 Console.WriteLine( "Text received : {0}", datagrama);  
-  
-                // Echo the data back to the client.  
-                byte[] msg = Encoding.ASCII.GetBytes(datagrama);  
-  
-                MeuSocket.Send(msg);  
+
+                MeuSocket.Send(resposta); //responde com o que recebeu  
                 MeuSocket.Shutdown(SocketShutdown.Both);  
-                //MeuSocket.close();      
             }  
-            Console.WriteLine("\nPress ENTER to continue...");  
         }
     }  
 }
