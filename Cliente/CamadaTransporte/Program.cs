@@ -95,7 +95,7 @@ namespace Cliente
             sender.Shutdown(SocketShutdown.Both);              
             return respostaServidor;
         }
-        public static byte[] montaSegmentoUDP(int portaOrigem, int portaDestino, string dados )
+        public static byte[] montaSegmentoUDP(int portaOrigem, int portaDestino, string length, string dados )
         {
             string po = portaOrigem.ToString();
             if( po.Length < 5) while(po.Length < 5) po = po.Insert(0, "0");
@@ -103,7 +103,7 @@ namespace Cliente
             string pd = portaDestino.ToString();
             if( pd.Length < 5) while(pd.Length < 5) pd = pd.Insert(0, "0");
             s += pd;
-            s += 10.ToString(); //length em bytes (cabecalo + data)
+            s += length; //length em bytes (cabecalho + data)
             s += "0000000000000000"; //checksum
             s += dados; //2 bytes
             Console.WriteLine("Segmento UDP {0}", s);
@@ -150,13 +150,19 @@ namespace Cliente
                 if(site.Length % 2 != 0) site += " ";
                 for(int count = 0; count < site.Length; count+= 2)
                 {
-                    Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
+                    Socket socketUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
                     // Console.WriteLine("Fragmento {0}", site.Substring(count, 2));
-                    byte[] sendbuf = montaSegmentoUDP(minhaPorta, portaServidorUDP, site.Substring(count, 2));  
+                    byte[] sendbuf = montaSegmentoUDP(minhaPorta, portaServidorUDP, "00", site.Substring(count, 2));  
                     IPEndPoint ep = new IPEndPoint(ipAddress, portaServidorUDP);  
-                    s.SendTo(sendbuf, ep);  
+                    socketUDP.SendTo(sendbuf, ep);  
                     // Console.WriteLine("Message sent to UDP");
                 }
+
+                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
+                // Console.WriteLine("Fragmento {0}", site.Substring(count, 2));
+                byte[] sendUltimoSegmento = montaSegmentoUDP(minhaPorta, portaServidorUDP, "11", "fm");  
+                IPEndPoint iep = new IPEndPoint(ipAddress, portaServidorUDP);  
+                s.SendTo(sendUltimoSegmento, iep);  
                     
          }
                  

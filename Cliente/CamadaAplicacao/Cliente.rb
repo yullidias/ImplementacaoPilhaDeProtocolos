@@ -9,7 +9,7 @@ if ArgumentoslinhaDeComando.length != 2
 end
 
 SERVIDOR = ArgumentoslinhaDeComando[0]
-PORTA_SERVIDOR = 8090
+PORTA_SERVIDOR = 11000
 MENSAGEM = ArgumentoslinhaDeComando[1]
 MAQUINA = "Cliente"
 
