@@ -1,7 +1,0 @@
-socket_create --- socket criado com sucesso --- 2018-09-08 21:39:56
-socket_bind --- socket_bind ok --- 2018-09-08 21:39:56
-Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 21:39:56
-Socket_accept --- Resource id #9 OK --- 2018-09-08 21:40:04
-Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 21:40:04
-Socket_accept --- Resource id #12 OK --- 2018-09-08 21:40:04
-Socket_listen --- Abrir escuta para uma conexão no socket OK --- 2018-09-08 21:40:04
