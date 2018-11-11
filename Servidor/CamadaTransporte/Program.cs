@@ -78,6 +78,7 @@ namespace Server
             byte[] segmento;
             byte[] bytes = new Byte[1024];  
             int minhaPorta = 11000;
+            int minhaPortaUDP = 9999;
             string meuIP = "192.168.0.16";
             IPAddress ipAddress = IPAddress.Parse(meuIP); 
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, minhaPorta); 
@@ -87,7 +88,7 @@ namespace Server
             Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);  
          
             listener.Bind(localEndPoint);  
-            listener.Listen(10);  
+            listener.Listen(10);  //Listen(Backlog) - Backlog = O comprimento máximo da fila de conexões pendentes.
   
             while (!fimConexaoTCP) {  
                 Socket MeuSocket = listener.Accept();  
@@ -116,6 +117,23 @@ namespace Server
                 MeuSocket.Shutdown(SocketShutdown.Both);  
             }  
             Console.WriteLine("Conexão UDP");
+            int receivedDataLength;
+            byte[] pacoteUDP = new byte[1024];
+            IPEndPoint endPointUDP = new IPEndPoint(IPAddress.Any, minhaPortaUDP);
+
+            Socket socketUDP = new Socket(AddressFamily.InterNetwork,SocketType.Dgram, ProtocolType.Udp);
+
+            socketUDP.Bind(endPointUDP);
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint Remote = (EndPoint)(sender);
+            while(true)
+            {
+                Console.WriteLine("listening ...");
+                pacoteUDP = new byte[1024];
+                receivedDataLength = socketUDP.ReceiveFrom(pacoteUDP, ref Remote);            
+                Console.WriteLine(Encoding.ASCII.GetString(pacoteUDP));
+            }  
+
         }
     }  
 }

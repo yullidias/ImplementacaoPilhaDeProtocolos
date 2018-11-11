@@ -100,6 +100,7 @@ namespace Cliente
             string ipServidor = "192.168.0.16";
             int minhaPorta = Process.GetCurrentProcess().Id;
             int portaServidor = 11000;
+            int portaServidorUDP = 9999;
             byte[] respostaServidor = new byte[1024];    
 
             string portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd;
@@ -119,7 +120,17 @@ namespace Cliente
                 Console.WriteLine("ACK {0}, SYNC {1}, FINC {2}", ackControl, synControl, finControl);
             }
             if(finControl == "1")
-                Console.WriteLine("Enviar pacot UDP");
+            {
+                
+                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
+        
+                byte[] sendbuf = Encoding.ASCII.GetBytes("TESTE UDP");  
+                IPEndPoint ep = new IPEndPoint(ipAddress, portaServidorUDP);  
+        
+                s.SendTo(sendbuf, ep);  
+        
+                Console.WriteLine("Message sent to UDP");    
+         }
                  
         }
     }
