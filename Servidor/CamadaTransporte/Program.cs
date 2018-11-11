@@ -23,7 +23,7 @@ namespace Server
             return controle;
         }
         
-        public static byte[] montaSegmentoTCP(int portaOrigem, int portaDestino, int seq, int ack,
+        public static byte[] montaSegmentoTCP(int portaOrigem, string portaDestino, int seq, int ack,
                                     bool ackControl, bool synControl, bool finControl, int rwnd, 
                                     string dados)
         {
@@ -32,7 +32,7 @@ namespace Server
             string po = portaOrigem.ToString();            
             if(po.Length < 5) { while(po.Length < 5) { po = po.Insert(0, "0"); } };            
             s += po;
-            string pd = portaDestino.ToString(); 
+            string pd = portaDestino; 
             if(pd.Length < 5) while(pd.Length < 5) pd = pd.Insert(0, "0");           
             s += pd ;
             s += seq.ToString();
@@ -73,7 +73,9 @@ namespace Server
 
         public static void Main(string[] args)
         {
+            bool fimConexaoTCP = false;
             string datagrama = null;  
+            byte[] segmento;
             byte[] bytes = new Byte[1024];  
             int minhaPorta = 11000;
             string meuIP = "192.168.0.16";
@@ -82,25 +84,38 @@ namespace Server
 
             string portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd;
           
-            Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp );  
+            Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);  
          
             listener.Bind(localEndPoint);  
             listener.Listen(10);  
   
-            while (true) {  
+            while (!fimConexaoTCP) {  
                 Socket MeuSocket = listener.Accept();  
                 datagrama = null;  
-  
+                segmento = null;
                 MeuSocket.Receive(bytes, SocketFlags.None);  
                 datagrama = Encoding.UTF8.GetString(bytes);  
                 
-                byte[] resposta = Encoding.UTF8.GetBytes(datagrama);
+                
                 decodificaSegmentoTCP(datagrama, out portaOrigem, out portaDestino, out seq, out ack, out offset, out reserved, out ackControl, out synControl, out finControl, out rwnd);
+                if(synControl == "1")
+                    segmento = montaSegmentoTCP(minhaPorta, portaOrigem, 0, 1, true, true,  false, 10, "");
+                else if(ackControl == "1")
+                {
+                    segmento = montaSegmentoTCP(minhaPorta, portaOrigem, 0, 1, false, false,  true, 10, "");
+                    fimConexaoTCP = true;
+                }
+                else
+                {
+                    segmento = montaSegmentoTCP(minhaPorta, portaOrigem, 0, 1, false, false,  false, 10, "Sem conexao");
+                }
                 Console.WriteLine( "Text received : {0}", datagrama);  
-
+                byte[] resposta = segmento;
+                Console.WriteLine("Resposta {0}", Encoding.UTF8.GetString(resposta));
                 MeuSocket.Send(resposta); //responde com o que recebeu  
                 MeuSocket.Shutdown(SocketShutdown.Both);  
             }  
+            Console.WriteLine("Conexão UDP");
         }
     }  
 }
