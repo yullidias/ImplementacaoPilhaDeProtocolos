@@ -8,7 +8,7 @@ if( count($argv) != 3)
 
 $MEU_IP = $argv[1];
 $SERVIDOR_CAMADA_SUPERIOR = $argv[2];
-$ARQUIVO_LOG = "../../log.txt";
+$ARQUIVO_LOG = "log.txt";
 $MINHA_PORTA = 8080;
 $PORTA_CAMADA_SUPERIOR = 8070;
 $TAM_MAX_BYTES = '3000000';
@@ -159,7 +159,7 @@ do
         $mensagem = obterMenssagemDoQuadro($quadro);
         escreveNoLog("Mensagem {" . $mensagem ."} recebida");
         $respostaCamadaSuperior = enviarMensagemEObterRespostaDoServidor($SERVIDOR_CAMADA_SUPERIOR, $PORTA_CAMADA_SUPERIOR, $mensagem, $TAM_MAX_BYTES);
-        print("resp sup " . $respostaCamadaSuperior . "\n");
+        //print("resp sup " . $respostaCamadaSuperior . "\n");
         socket_write($spawn, $respostaCamadaSuperior, strlen ($respostaCamadaSuperior));
     }
 

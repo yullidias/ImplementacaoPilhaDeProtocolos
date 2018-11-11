@@ -10,9 +10,10 @@ $MEU_IP = $argv[1];
 $IP_SERVIDOR = $argv[2];
 $PORTA_SERVIDOR_FISICA = 8080;
 $MINHA_PORTA_CAMADA_SUPERIOR = 8090;
-$ARQUIVO_LOG = "../../log.txt";
+$ARQUIVO_LOG = "log.txt";
 $LIMITE_MAXIMO_MENSAGEM = '3000000';
 $MAC_from_IP = array( "127.0.0.1" => "d0:df:9a:c4:07:ab");
+$MAC_from_IP["192.168.0.16"] = "d0:df:9a:c4:07:ab";
 
 function getMAC($ip, &$macIp)
 {
@@ -250,7 +251,7 @@ do
         }
         else
         {
-            print("pacote: " . $pacote);
+           // print("pacote: " . $pacote);
             escreveNoLog("Pacote recebido");
         }
         escreveNoLog("Mensagem {" . $pacote ."} recebida da camada superior");
