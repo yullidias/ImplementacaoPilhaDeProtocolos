@@ -95,6 +95,31 @@ namespace Cliente
             sender.Shutdown(SocketShutdown.Both);              
             return respostaServidor;
         }
+        public static byte[] montaSegmentoUDP(int portaOrigem, int portaDestino, string dados )
+        {
+            string po = portaOrigem.ToString();
+            if( po.Length < 5) while(po.Length < 5) po = po.Insert(0, "0");
+            string s = po;
+            string pd = portaDestino.ToString();
+            if( pd.Length < 5) while(pd.Length < 5) pd = pd.Insert(0, "0");
+            s += pd;
+            s += 10.ToString(); //length em bytes (cabecalo + data)
+            s += "0000000000000000"; //checksum
+            s += dados; //2 bytes
+            Console.WriteLine("Segmento UDP {0}", s);
+            return Encoding.ASCII.GetBytes(s);
+        }
+        public static void decodificaSegmentoUDP(string segmento, out string portaOrigem, out string portaDestino, out string dados)
+        {
+            Console.WriteLine("decodificar {0}", segmento);
+            int index = 0;
+            portaOrigem = segmento.Substring(0, 5); index += 5;
+            portaDestino = segmento.Substring(index, 5); index += 5;
+            index += 2; //length
+            index += 16; //checksum
+            dados = segmento.Substring(index, 2);
+            Console.WriteLine("UDP po {0} pd {1} dados {2}", portaOrigem, portaDestino, dados);            
+        }
         static void Main(string[] args)
         {
             string ipServidor = "192.168.0.16";
@@ -121,15 +146,18 @@ namespace Cliente
             }
             if(finControl == "1")
             {
-                
-                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
-        
-                byte[] sendbuf = Encoding.ASCII.GetBytes("TESTE UDP");  
-                IPEndPoint ep = new IPEndPoint(ipAddress, portaServidorUDP);  
-        
-                s.SendTo(sendbuf, ep);  
-        
-                Console.WriteLine("Message sent to UDP");    
+                String site = "www.google.com.br";
+                if(site.Length % 2 != 0) site += " ";
+                for(int count = 0; count < site.Length; count+= 2)
+                {
+                    Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);  
+                    // Console.WriteLine("Fragmento {0}", site.Substring(count, 2));
+                    byte[] sendbuf = montaSegmentoUDP(minhaPorta, portaServidorUDP, site.Substring(count, 2));  
+                    IPEndPoint ep = new IPEndPoint(ipAddress, portaServidorUDP);  
+                    s.SendTo(sendbuf, ep);  
+                    // Console.WriteLine("Message sent to UDP");
+                }
+                    
          }
                  
         }

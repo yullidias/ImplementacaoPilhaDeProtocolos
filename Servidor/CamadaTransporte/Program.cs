@@ -70,7 +70,17 @@ namespace Server
             rwnd = pacote.Substring(index, 2); index += 2; //janela(16bits) - nº de octetos que o remetente do segmento está disposto a aceitar            
             Console.WriteLine("PO {0} PD {1} SEQ {2} ACK {3} OFFSET {4} RESERVED {5} ACKC{6} SYNC{7} FINC{8} RWND{9} ",portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd);
         }
-
+        public static void decodificaSegmentoUDP(string segmento, out string portaOrigem, out string portaDestino, out string dados)
+        {
+            Console.WriteLine("decodificar {0}", segmento);
+            int index = 0;
+            portaOrigem = segmento.Substring(0, 5); index += 5;
+            portaDestino = segmento.Substring(index, 5); index += 5;
+            index += 2; //length
+            index += 16; //checksum
+            dados = segmento.Substring(index, 2);
+            Console.WriteLine("UDP po {0} pd {1} dados {2}", portaOrigem, portaDestino, dados);            
+        }
         public static void Main(string[] args)
         {
             bool fimConexaoTCP = false;
@@ -83,7 +93,7 @@ namespace Server
             IPAddress ipAddress = IPAddress.Parse(meuIP); 
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, minhaPorta); 
 
-            string portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd;
+            string portaOrigem, portaDestino, seq, ack, offset, reserved, ackControl, synControl, finControl, rwnd, dados;
           
             Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);  
          
@@ -113,7 +123,7 @@ namespace Server
                 Console.WriteLine( "Text received : {0}", datagrama);  
                 byte[] resposta = segmento;
                 Console.WriteLine("Resposta {0}", Encoding.UTF8.GetString(resposta));
-                MeuSocket.Send(resposta); //responde com o que recebeu  
+                MeuSocket.Send(resposta); 
                 MeuSocket.Shutdown(SocketShutdown.Both);  
             }  
             Console.WriteLine("Conexão UDP");
@@ -128,10 +138,11 @@ namespace Server
             EndPoint Remote = (EndPoint)(sender);
             while(true)
             {
-                Console.WriteLine("listening ...");
+                // Console.WriteLine("listening ...");
                 pacoteUDP = new byte[1024];
-                receivedDataLength = socketUDP.ReceiveFrom(pacoteUDP, ref Remote);            
-                Console.WriteLine(Encoding.ASCII.GetString(pacoteUDP));
+                receivedDataLength = socketUDP.ReceiveFrom(pacoteUDP, ref Remote); 
+                decodificaSegmentoUDP(Encoding.ASCII.GetString(pacoteUDP), out portaOrigem, out portaDestino, out dados);           
+                // Console.WriteLine("Dados recebidos {0}", dados);
             }  
 
         }
