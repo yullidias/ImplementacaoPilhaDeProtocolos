@@ -8,19 +8,23 @@ pegarIPDoDatagrama <- function(msgDatagrama){
   return <- msgQuebra[5]
 }
 
-server <- function(){
+confereTabelaRoteamento <- function(ip) {
+  table <- read.table("tabela_roteamento.csv", header = TRUE, sep = ";")
+  porta <- table[table$IP == ip,]
+  return(porta[2])
+}
+
+roteador_parte2 <- function(){
   while(TRUE){
     writeLines("Listening...")
     con <- socketConnection(host="localhost", port = 4000, blocking=TRUE,
                             server=TRUE, open="r+")
     datagram <- readLines(con, 1)
     ip <- pegarIPDoDatagrama(datagram)
-
-    # abrir um arquivo txt
-
-    writeLines(response, con)
+    porta <- confereTabelaRoteamento(ip)
+    writeLines(porta, con)
     close(con)
   }
 }
 
-server()
+roteador_parte2()
