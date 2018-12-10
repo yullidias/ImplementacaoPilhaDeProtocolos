@@ -1,3 +1,5 @@
+source("../../functions.r")
+
 server <- function(){
   while(TRUE){
     writeLines("Listening...")
