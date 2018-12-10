@@ -2,10 +2,35 @@
 
 # Convert decimal to binary
 decToBinary <- function(n) {
-  if(n > 1) {
-    decToBinary(as.integer(n/2))
-  }
-  cat(n %% 2)
+  s<-strsplit(n,"\\.")[[1]]
+  s[1]
+  s[2]
+  s[3]
+  s[4]
+  s1<-as.numeric(s[1])
+  s2<-as.numeric(s[2])
+  s3<-as.numeric(s[3])
+  s4<-as.numeric(s[4])
+  x1 <- intToBits(s1)
+  x2 <- intToBits(s2)
+  x3 <- intToBits(s3)
+  x4 <- intToBits(s4)
+  x1 <- rev(x1)
+  x2 <- rev(x2)
+  x3 <- rev(x3)
+  x4 <- rev(x4)
+  x1 <- paste(as.integer(x1), collapse = "")
+  x2 <- paste(as.integer(x2), collapse = "")
+  x3 <- paste(as.integer(x3), collapse = "")
+  x4 <- paste(as.integer(x4), collapse = "")
+  c1<-stringr::str_split_fixed(x1,"",25)
+  c2<-stringr::str_split_fixed(x2,"",25)
+  c3<-stringr::str_split_fixed(x3,"",25)
+  c4<-stringr::str_split_fixed(x4,"",25)
+  # print(c[25])
+  resultado <- paste(c1[25],c2[25],c3[25],c4[25], sep = ".")
+  
+  return(resultado)
 }
 
 #Convert IP to binary
@@ -17,26 +42,26 @@ ipToBinary <- function(ip) {
 }
 
 # Transform to RFC
-colocaNaRFC <- function(mensagem, IPd, IPo)
+colocaNoPadraoIP <- function(mensagem, IPd, IPo)
 {
   #Coloca no padrao RFC 791 Protocolo IP
-  nCarac <- stringr::str_length(msg) #conta quantos caracteres tem na mensagem
+  nCarac <- stringr::str_length(mensagem) #conta quantos caracteres tem na mensagem
   totalBytes = nCarac + 20 + 20 #header fixo em 20 bytes
   totalBits <- totalBytes*8
   x <- intToBits(totalBits)
   x <- rev(x)
   x <- paste(as.integer(x), collapse = "")
-  c<-str_split_fixed(x,"",17)
+  c<-stringr::str_split_fixed(x,"",17)
   VersionV <- "0100"
   IHL <- "1111"
-  TypeOfService <-"00000000"
+  TypeOfService <-"00000000" 
   TotalLength <- c[17]
-  print(TotalLength)
+  
   ID <- "0000000000000001"
   FlagsF <- "010"
   FragmentO <- "0000000000000"
   TTL <- "00000011"
-  Protocolo <- "000000110"
+  Protocolo <- "00000110" 
   HeaderSoma <- "0000000000000000"
   IPOrigem <- IPo
   IPDestino <- IPd
@@ -50,7 +75,7 @@ colocaNaRFC <- function(mensagem, IPd, IPo)
   msg5 <- paste(IPDestino,sep="", collapse=NULL)
   msg6 <- paste(Opcao,Padding,sep="", collapse=NULL)
   msg7 <- paste(msg,sep="", collapse=NULL)
-  mensagemNaRFC <- paste(msg1,msg2,msg3,msg4,msg5,msg6,msg7, sep = " ")
-
-  return(mensagemNaRFC)
+  mensagemNaRFC <- paste(msg1,msg2,msg3,msg4,msg5,msg6,msg7, sep = " ") 
+  # print(mensagemNaRFC)
+  return <- mensagemNaRFC
 }
