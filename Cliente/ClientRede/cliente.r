@@ -18,4 +18,5 @@ client <- function(){
   }
 }
 #client()
-helloWord()
+
+ipToBinary("127.0.0.1")

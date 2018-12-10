@@ -1,5 +1,22 @@
 # Funções compartilhadas
 
+# Convert decimal to binary
+decToBinary <- function(n) {
+  if(n > 1) {
+    decToBinary(as.integer(n/2))
+  }
+  cat(n %% 2)
+}
+
+#Convert IP to binary
+ipToBinary <- function(ip) {
+  r <- strsplit(ip,split="\\.")[[1]]
+  bin <- paste(decToBinary(strtoi(r[1], base = 0L)),decToBinary(strtoi(r[2], base = 0L)),
+               decToBinary(strtoi(r[3], base = 0L)),decToBinary(strtoi(r[4], base = 0L)),
+               collapse=NULL)
+}
+
+# Transform to RFC
 colocaNaRFC <- function(mensagem, IPd, IPo)
 {
   #Coloca no padrao RFC 791 Protocolo IP
