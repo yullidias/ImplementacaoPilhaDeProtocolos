@@ -7,10 +7,10 @@ decToBinary <- function(n) {
   s[2]
   s[3]
   s[4]
-  s1<-as.numeric(s[1])
-  s2<-as.numeric(s[2])
-  s3<-as.numeric(s[3])
-  s4<-as.numeric(s[4])
+  s1 <- as.numeric(s[1])
+  s2 <- as.numeric(s[2])
+  s3 <- as.numeric(s[3])
+  s4 <- as.numeric(s[4])
   x1 <- intToBits(s1)
   x2 <- intToBits(s2)
   x3 <- intToBits(s3)
@@ -23,10 +23,10 @@ decToBinary <- function(n) {
   x2 <- paste(as.integer(x2), collapse = "")
   x3 <- paste(as.integer(x3), collapse = "")
   x4 <- paste(as.integer(x4), collapse = "")
-  c1<-stringr::str_split_fixed(x1,"",25)
-  c2<-stringr::str_split_fixed(x2,"",25)
-  c3<-stringr::str_split_fixed(x3,"",25)
-  c4<-stringr::str_split_fixed(x4,"",25)
+  c1 <- stringr::str_split_fixed(x1,"",25)
+  c2 <- stringr::str_split_fixed(x2,"",25)
+  c3 <- stringr::str_split_fixed(x3,"",25)
+  c4 <- stringr::str_split_fixed(x4,"",25)
   # print(c[25])
   resultado <- paste(c1[25],c2[25],c3[25],c4[25], sep = ".")
   
@@ -78,4 +78,11 @@ colocaNoPadraoIP <- function(mensagem, IPd, IPo)
   mensagemNaRFC <- paste(msg1,msg2,msg3,msg4,msg5,msg6,msg7, sep = " ") 
   # print(mensagemNaRFC)
   return <- mensagemNaRFC
+}
+
+pegarMsgDoDatagrama <- function(msgDatagrama){
+  #Pega mensagem do datagrama
+  msgQuebra <- strsplit(msgDatagrama," ")[[1]]
+  msgQuebra[7]
+  print(msgQuebra[7])
 }
