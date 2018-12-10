@@ -29,7 +29,7 @@ decToBinary <- function(n) {
   c4 <- stringr::str_split_fixed(x4,"",25)
   # print(c[25])
   resultado <- paste(c1[25],c2[25],c3[25],c4[25], sep = ".")
-  
+
   return(resultado)
 }
 
@@ -54,14 +54,14 @@ colocaNoPadraoIP <- function(mensagem, IPd, IPo)
   c<-stringr::str_split_fixed(x,"",17)
   VersionV <- "0100"
   IHL <- "1111"
-  TypeOfService <-"00000000" 
+  TypeOfService <-"00000000"
   TotalLength <- c[17]
-  
+
   ID <- "0000000000000001"
   FlagsF <- "010"
   FragmentO <- "0000000000000"
   TTL <- "00000011"
-  Protocolo <- "00000110" 
+  Protocolo <- "00000110"
   HeaderSoma <- "0000000000000000"
   IPOrigem <- IPo
   IPDestino <- IPd
@@ -75,14 +75,16 @@ colocaNoPadraoIP <- function(mensagem, IPd, IPo)
   msg5 <- paste(IPDestino,sep="", collapse=NULL)
   msg6 <- paste(Opcao,Padding,sep="", collapse=NULL)
   msg7 <- paste(msg,sep="", collapse=NULL)
-  mensagemNaRFC <- paste(msg1,msg2,msg3,msg4,msg5,msg6,msg7, sep = " ") 
+  mensagemNaRFC <- paste(msg1,msg2,msg3,msg4,msg5,msg6,msg7, sep = " ")
   # print(mensagemNaRFC)
   return <- mensagemNaRFC
 }
 
+# Pega a mensagem
 pegarMsgDoDatagrama <- function(msgDatagrama){
   #Pega mensagem do datagrama
   msgQuebra <- strsplit(msgDatagrama," ")[[1]]
   msgQuebra[7]
-  print(msgQuebra[7])
+  #print(msgQuebra[7])
+  return(msgQuebra[7])
 }
